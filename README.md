@@ -4,12 +4,12 @@ Authors: Lucas Peña, Nishant Rodrigues
 
 # Proposal
 
-- PoW -> PoS summary
+- PoW -> PoS summary (Nishant)
 - Truthfulness importance for blockchain protocols
 - High-level abstraction of Ouroboros
 - Maude intro, application to formal analysis
-- Formal analysis of abstraction in Maude
-- Future work/extensions/other directions (Casper, paper analysis)
+- Formal analysis of abstraction in Maude (Nishant)
+- Future work/extensions/other directions (Casper, paper analysis) (Nishant)
 
 # References
 
