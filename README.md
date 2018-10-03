@@ -37,8 +37,8 @@ will focus on a formal analysis in Maude.
 The Maude System is a programming language often used for modeling and
 verification of systems. It has been used to verify a wide spectrum of systems,
 from biological systems (Pathway Logic [pathwaylogic]), to Cryptographic
-Protocols (Maude NPA [@NPA]), to concensus algorithms, to programming languages
-(KFramework [@kmaude]), and so on (see [@twentyears] for a comprehensive survey
+Protocols (Maude NPA [NPA]), to concensus algorithms, to programming languages
+(KFramework [kmaude]), and so on (see [twentyears] for a comprehensive survey
 of such applications). Maude allows specifying systems, including their
 non-deterministic behaviours, as a transition system using rewriting logic. for
 model checking purposes they provide a very high level formalism for
@@ -71,3 +71,6 @@ about our abstraction.
 [blockchain-agt]: https://dl.acm.org/citation.cfm?id=2772879.2773270
 
 [pathwaylogic]: https://doi.org/10.1016/S1571-0661(05)82533-2
+[NPA] : http://www.sciencedirect.com/science/article/pii/S0304397506005780
+[kmaude]: http://dx.doi.org/10.1007/978-3-642-16310-4_8
+[twentyears] : http://www.sciencedirect.com/science/article/pii/S1567832612000707
