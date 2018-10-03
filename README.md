@@ -4,7 +4,18 @@ Authors: Lucas Peña, Nishant Rodrigues
 
 # Proposal
 
-- PoW -> PoS summary (Nishant)
+Crypotocurrencies generally utilize a "proof of work" scheme to deter denial of
+service and other attacks. A key aspect to proof of work schemes is that they
+must be expensive to compute, yet easy to verify. Most major Cryptocurrency
+networks use CPU bound schemes that, for example, involve repeatedly calculating
+cryptographic hashes. While this scheme is effecitve in securing the network, it
+is extremely energy-hungry. It has been estimated that globally, bitcoin mining
+consumes electricity on a scale comaprable to the that of Ireland. An
+alternative, proof of stake, attempts to address this. It attempts to chose the
+a block through a voting mechanism. The dynamics of this mechanism is however
+complex, are various incentives working at cross-purposes (if the block I vote
+for gets selected I rewarded; voters could control miners; voters could attempt
+denial of service attacks; etc).
 
 - Truthfulness importance for blockchain protocols
 In the blockchain domain, security is of the utmost importance. Cryptocurrency would inevitably fail if it was in a miner's best interest to lie about things like block validity or a transaction occurring. In the domain of proof of stake, these security concerns are heightened. As users rather than miners now have control over the introduction of new currency, it is perhaps more critical that a proof of stake protocol is truthful.
