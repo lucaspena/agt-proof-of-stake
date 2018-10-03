@@ -12,9 +12,23 @@ In the blockchain domain, security is of the utmost importance. Cryptocurrency w
 - High-level abstraction of Ouroboros
 Our project focuses on Ouroboros [1], one of the first proof of stake based blockchain protocols, used in the coin Cardano. Ouroboros is a complicated algorithm, so we first plan on producing a high-level abstraction of this proof of stake algorithm, amenable to modelling and proving complex properties. Then we will perform an incentive compatibility analysis of our abstraction. We will determine if the abstraction is dominant-strategy-incentive-compatible (DSIC) or Bayesian-incentive-compatible (BIC) in the weaker case. If not, we will attempt to make minor adjustments in order to achieve these nice properties. Next, we will focus on a formal analysis in Maude.
 
-- Maude intro, application to formal analysis (Nishant)
+The Maude System is a programming language often used for modeling and
+verification of systems. It has been used to verify a wide spectrum of systems,
+from biological systems (Pathway Logic [@pathwaylogic]), to Cryptographic
+Protocols (Maude NPA [@NPA]), to concensus algorithms, to programming languages
+(KFramework [@kmaude]), and so on (see [@twentyears] for a comprehensive survey
+of such applications). Maude allows specifying systems, including their
+non-deterministic behaviours, as a transition system using rewriting logic. for
+model checking purposes they provide a very high level formalism for
+axiomatizing possibly infinite Kripke structures. This is exploited in Maude for
+formal analysis purposes, since concurrent systems specified as rewrite theories
+can be analyzed using Maude's LTL model checker and other model checkers and
+theorem proving tools in Maude's formal environment.
 
-- Formal analysis of abstraction in Maude (Nishant)
+We intend to leverage these capabilities of Maude to write a high level
+specification (eliding details that aren't important to an AGT analysis),
+and to use this specification to formally verify certain game theoretic properties
+of the protocol.
 
 - Future work/extensions/other directions (Casper, paper analysis)
 This project has many opportunities for future work. First of all, we can work on tightening our abstraction until we match all the specifications of Ouroboros. This would provide the utmost confidence with the truthfulness (or lack thereof) of the scheme as defined in [1]. We can also compare and contrast the truthfulness of Ouroboros with other proof of stake schemes such as Casper [2], a currently in-development proof of stake protocol for Ethereum.
