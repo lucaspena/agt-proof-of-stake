@@ -14,7 +14,7 @@ Our project focuses on Ouroboros [1], one of the first proof of stake based bloc
 
 The Maude System is a programming language often used for modeling and
 verification of systems. It has been used to verify a wide spectrum of systems,
-from biological systems (Pathway Logic [@pathwaylogic]), to Cryptographic
+from biological systems (Pathway Logic [pathwaylogic]), to Cryptographic
 Protocols (Maude NPA [@NPA]), to concensus algorithms, to programming languages
 (KFramework [@kmaude]), and so on (see [@twentyears] for a comprehensive survey
 of such applications). Maude allows specifying systems, including their
@@ -44,3 +44,4 @@ It is possible this project is more ambitious than anticipated. Our plan is to a
 - https://arxiv.org/abs/1710.09437
 - other AGT blockchain paper(s)
 
+[pathwaylogic]: https://doi.org/10.1016/S1571-0661(05)82533-2
