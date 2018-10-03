@@ -26,6 +26,7 @@ It is possible this project is more ambitious than anticipated. Our plan is to a
 - https://eprint.iacr.org/2016/889.pdf
 - Maude
 - Proof of work/Proof of stake/combined paper
-- Casper
+- https://arxiv.org/abs/1710.09437
+- https://arxiv.org/abs/1710.09437
 - other AGT blockchain paper(s)
 
