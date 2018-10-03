@@ -38,6 +38,6 @@ It is possible this project is more ambitious than anticipated. Our plan is to a
 
 [ouroboros]: https://eprint.iacr.org/2016/889.pdf
 [casper]: https://arxiv.org/abs/1710.09437
-[blockchain-econ]: https://dl.acm.org/citation.cfm?id=2772879.2773270
+[blockchain-agt]: https://dl.acm.org/citation.cfm?id=2772879.2773270
 
 [pathwaylogic]: https://doi.org/10.1016/S1571-0661(05)82533-2
