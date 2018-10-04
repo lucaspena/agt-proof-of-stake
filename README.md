@@ -35,9 +35,9 @@ will focus on a formal analysis in Maude.
 The Maude System is a programming language often used for modeling and
 verification of systems. It has been used to verify a wide spectrum of systems,
 from biological systems ([Pathway Logic][pathwaylogic]), to cryptographic
-protocols ([Maude NPA][NPA] ), to concensus algorithms, to programming languages
-([KFramework][kmaude] ), and so on (see [twentyears] for a comprehensive survey
-of such applications ). Maude allows specifying systems, including their
+protocols ([Maude NPA][NPA]), to concensus algorithms, to programming languages
+([KFramework][kmaude]), and so on (see [twentyears] for a comprehensive survey
+of such applications). Maude allows specifying systems, including their
 non-deterministic behaviours, as a transition system using rewriting logic. For
 model checking purposes they provide a very high level formalism for
 axiomatizing possibly infinite Kripke structures. This is exploited in Maude for
@@ -53,7 +53,7 @@ of the protocol.
 This project has many opportunities for future work. First of all, we can work
 on tightening our abstraction until we match all the specifications of
 Ouroboros. This would provide the utmost confidence with the truthfulness (or
-lack thereof) of the scheme as defined in [Ouroboros][[ouroboros]. We can also compare and
+lack thereof) of the scheme as defined in Ouroboros. We can also compare and
 contrast the truthfulness of Ouroboros with other proof of stake schemes such as
 [Casper][casper], a currently in-development proof of stake protocol for
 Ethereum.
