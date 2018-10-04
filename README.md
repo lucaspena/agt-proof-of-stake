@@ -6,28 +6,27 @@ Authors: Lucas Peña, Nishant Rodrigues
 
 Crypotocurrencies generally utilize a "proof of work" scheme to deter denial of
 service and other attacks. A key aspect to proof of work schemes is that they
-must be expensive to compute, yet easy to verify. Most major Cryptocurrency
-networks use CPU bound schemes that, for example, involve repeatedly calculating
+must be expensive to compute, yet easy to verify. Most major cryptocurrency
+networks use CPU bound schemes that, for example, involve repeatedly calculating
 cryptographic hashes. While this scheme is effecitve in securing the network, it
 is extremely energy-hungry. It has been estimated that globally, bitcoin mining
 consumes electricity on a scale comaprable to the that of Ireland. An
-alternative, proof of stake, attempts to address this. It attempts to chose the
-a block through a voting mechanism. The dynamics of this mechanism is however
-complex, are various incentives working at cross-purposes (if the block I vote
-for gets selected I rewarded; voters could control miners; voters could attempt
-denial of service attacks; etc).
-
-In the blockchain domain, security is of the utmost importance. Cryptocurrency
-would inevitably fail if it was in a miner's best interest to lie about things
-like block validity or a transaction occurring. In the domain of proof of stake,
-these security concerns are heightened. As users rather than miners now have
-control over the introduction of new currency, it is perhaps more critical that
-a proof of stake protocol is truthful.
+alternative, proof of stake, attempts to address this. It attempts to choose a
+block through a voting mechanism. However, the dynamics of this mechanism is
+complex, and there are various incentives working at cross-purposes (if the
+block I vote for gets selected I get rewarded; voters could control miners;
+voters could attempt denial of service attacks; etc). Still, truthfulness in
+this domain is of the utmost importance. Cryptocurrency would inevitably fail if
+it was in a miner's best interest to lie about things like block validity or a
+transaction occurring. In the domain of proof of stake, these security concerns
+are heightened. As users rather than miners now have control over the
+introduction of new currency, it is perhaps more critical that a proof of stake
+protocol is truthful.
 
 Our project focuses on Ouroboros [ouroboros], one of the first proof of stake
 based blockchain protocols, used in the coin Cardano. Ouroboros is a complicated
 algorithm, so we first plan on producing a high-level abstraction of this proof
-of stake algorithm, amenable to modelling and proving complex properties. Then
+of stake algorithm, amenable to modelling and proving complex properties. Then,
 we will perform an incentive compatibility analysis of our abstraction. We will
 determine if the abstraction is dominant-strategy-incentive-compatible (DSIC) or
 Bayesian-incentive-compatible (BIC) in the weaker case. If not, we will attempt
@@ -36,11 +35,11 @@ will focus on a formal analysis in Maude.
 
 The Maude System is a programming language often used for modeling and
 verification of systems. It has been used to verify a wide spectrum of systems,
-from biological systems (Pathway Logic [pathwaylogic]), to Cryptographic
-Protocols (Maude NPA [NPA]), to concensus algorithms, to programming languages
+from biological systems (Pathway Logic [pathwaylogic]), to cryptographic
+protocols (Maude NPA [NPA]), to concensus algorithms, to programming languages
 (KFramework [kmaude]), and so on (see [twentyears] for a comprehensive survey
 of such applications). Maude allows specifying systems, including their
-non-deterministic behaviours, as a transition system using rewriting logic. for
+non-deterministic behaviours, as a transition system using rewriting logic. For
 model checking purposes they provide a very high level formalism for
 axiomatizing possibly infinite Kripke structures. This is exploited in Maude for
 formal analysis purposes, since concurrent systems specified as rewrite theories
