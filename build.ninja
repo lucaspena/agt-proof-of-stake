@@ -1,0 +1,8 @@
+rule pandoc
+    command = pandoc -o $out $in $flags
+    description = Pandoc $out
+
+build README.pdf : pandoc README.md
+    flags = --to latex -V geometry:margin=1.5cm $
+                       -V links-as-notes      $
+                       -V fontsize:11pt
