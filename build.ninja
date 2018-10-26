@@ -1,8 +1,23 @@
+# Rules
+# =====
+
 rule pandoc
     command = pandoc -o $out $in $flags
     description = Pandoc $out
+
+rule tangle                                                                                         
+    description = Tangling $in                                                                      
+    command     = LUA_PATH=ext/pandoc-tangle/?.lua $
+                  pandoc $in -o "$out" "--metadata=code:$tangle_selector" $
+                         --to "ext/pandoc-tangle/tangle.lua"
+
+# Build Edges
+# ===========
 
 build README.pdf : pandoc README.md
     flags = --to latex -V geometry:margin=1.5cm $
                        -V links-as-notes      $
                        -V fontsize:11pt
+
+build stage-1.maude : tangle stage-1.md
+    tangle_selector = .maude
