@@ -11,6 +11,11 @@ rule tangle
                   pandoc $in -o "$out" "--metadata=code:$tangle_selector" $
                          --to "ext/pandoc-tangle/tangle.lua"
 
+rule maude
+    command = bash -c "maude -no-banner $in <(echo set show timing off .) </dev/null"
+    description = Pandoc $out
+    pool = console
+
 # Build Edges
 # ===========
 
@@ -21,3 +26,4 @@ build README.pdf : pandoc README.md
 
 build stage-1.maude : tangle stage-1.md
     tangle_selector = .maude
+build stage-1.out : maude stage-1.maude
