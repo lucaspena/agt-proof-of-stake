@@ -3,19 +3,12 @@ mod STAGE-1 is
   protecting NAT .
   protecting QID .
   
-  sort Slot .
-  subsort Nat < Slot .
-  
-  sort Stakeholder . --- Qid
-  subsort Qid < Stakeholder .
-  sort PublicKey .
-  
-  op Stakeholder : PublicKey Nat -> Stakeholder [ctor] .
- 
-  sort StakeholderList .
-  subsort Stakeholder < StakeholderList .
+
+  sort Stakeholder     . subsort Qid         < Stakeholder .
+  sort StakeholderList . subsort Stakeholder < StakeholderList .
   op _ _ : StakeholderList StakeholderList -> StakeholderList [ctor assoc] .
  
+  sort Slot . subsort Nat < Slot .
   sort Block .
   op block : Slot Stakeholder -> Block [ctor] .
 
