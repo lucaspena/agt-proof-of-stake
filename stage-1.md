@@ -78,6 +78,7 @@ mod STAGE-1 is
   eq total-stake(emptyStakeHolderList) = 0 .
   eq total-stake(sh(Q, STAKE) SHS) = STAKE + total-stake(SHS) .
 
+---- Defined exactly as paragraph below def 4.7
   op leader-election : Slot StakeholderList -> ElectionResult .
   rl leader-election(N, emptyStakeHolderList) => bad-election .
  crl leader-election(N, SH1 SHS)
