@@ -93,6 +93,8 @@ mod STAGE-1 is
 ---- Endorser election is the same as leader election as per first 2 paragraphs of Section 7.1
   op endorser-election : Slot StakeholderList -> ElectionResult .
   rl endorser-election(N, SHS) => leader-election(N, SHS) .
+
+  op reward : Slot StakeholderList -> Rat .
 endm
 ```
 
