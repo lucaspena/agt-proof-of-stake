@@ -89,6 +89,10 @@ mod STAGE-1 is
   => leader-election(N, SHS) | prob(1 - STAKE / total-stake(SH1 SHS))
   if sh(Q, STAKE) := SH1
    .
+
+---- Endorser election is the same as leader election as per first 2 paragraphs of Section 7.1
+  op endorser-election : Slot StakeholderList -> ElectionResult .
+  rl endorser-election(N, SHS) => leader-election(N, SHS) .
 endm
 ```
 
