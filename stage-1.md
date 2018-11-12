@@ -124,5 +124,5 @@ reduce maxValid(   genesisBlock(SH1) block(1, SH2) block(2, SH2) block(3, SH2)
                ) .
 
 search leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>! ER1 .
----search leader-election(1, SH1 SH2 SH3) =>! leader-election(1, emptyStakeHolderList) | prob(R1) .
+search leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>! bad-election | prob(R1) .
 ```
