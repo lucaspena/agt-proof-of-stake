@@ -35,7 +35,7 @@ mod STAGE-1 is
     eq CHAIN  in (CHAIN  ; CHAINS) = true .
     eq CHAIN1 in (CHAIN2 ; CHAINS) = (CHAIN1 in CHAINS) [owise] .
 
-    vars SHS : StakeholderList .
+    vars SHS SHS1 SHS2 : StakeholderList .
     vars SH1 SH2 SH3 SH4 SH5 : Stakeholder .
     vars S1 S2 : Slot .
     vars CHAIN CHAIN1 CHAIN2 : BlockChain .
@@ -60,6 +60,10 @@ mod STAGE-1 is
     eq genesisBlock(SHS) \ s(N) = epsilon .
     eq       CHAIN \ 0    = CHAIN .
     eq (CHAIN BLOCK) \ s(N) = CHAIN \ N .
+
+    op last-slot : BlockChain -> Slot .
+    eq last-slot(genesisBlock(SHS1))  = 0 .
+    eq last-slot(CHAIN block(N, SH1)) = N .
 
     --- Returns the longest chain in the set breaking ties in favor of the given chain
     op maxValid : BlockChain BlockChainSet -> BlockChain .
@@ -111,11 +115,19 @@ mod STAGE-1 is
     sort State .
     vars ST : State .
 
-    op { _ | _ | _ } : Network BlockChainSet StakeholderList -> State [ctor] .
+    op { _ | _ | _ | _ } : Network BlockChainSet StakeholderList Slot -> State [ctor] .
 
-   crl { (SH1[CHAINS1])         NW | CHAIN ; CHAINS2 | SHS }
-    => { (SH1[CHAIN ; CHAINS1]) NW | CHAIN ; CHAINS2 | SHS }
+   crl { (SH1[CHAINS1])         NW | CHAIN ; CHAINS2 | SHS | S1 }
+    => { (SH1[CHAIN ; CHAINS1]) NW | CHAIN ; CHAINS2 | SHS | S1 }
     if not(CHAIN in CHAINS1)
+     .
+   crl { (SH1[CHAIN ; CHAINS]) NW |         CHAINS1 | SHS | S1 }
+    => { (SH1[CHAIN ; CHAINS]) NW | CHAIN ; CHAINS1 | SHS | S1 }
+    if not(CHAIN in CHAINS1)
+     .
+   crl { (SH1[CHAIN ; CHAINS               ]) NW | CHAINS1 | SH1 SHS | S1 }
+    => { (SH1[CHAIN block(S1, SH1) ; CHAINS]) NW | CHAINS1 | SH1 SHS | S1 }
+    if last-slot(CHAIN) < S1
      .
 endm
 ```
@@ -156,10 +168,17 @@ search leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>! bad-election # prob
 
 reduce genesisBlock(sh('good, 51) sh('bad, 49)) in epsilon .
 
-search { emptyNetwork | epsilon | emptyStakeholderList } =>! ST .
+search { emptyNetwork | epsilon | emptyStakeholderList | N } =>! ST .
+rewrite { (sh('good, 51)[emptyBlockChainSet]) sh('bad, 49)[emptyBlockChainSet]
+       | genesisBlock(sh('good, 51) sh('bad, 49))
+       | sh('good, 51) sh('bad, 49)
+       | 3
+       } .
 search { (sh('good, 51)[emptyBlockChainSet]) sh('bad, 49)[emptyBlockChainSet]
        | genesisBlock(sh('good, 51) sh('bad, 49))
-       | sh('good, 51) sh('bad, 49) }
+       | sh('good, 51) sh('bad, 49)
+       | 3
+       }
    =>! ST
      .
 ```
