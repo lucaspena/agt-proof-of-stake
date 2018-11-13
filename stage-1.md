@@ -10,8 +10,8 @@ mod STAGE-1 is
     op sh : Qid NzNat -> Stakeholder [ctor] .
 
     sort StakeholderList . subsort Stakeholder < StakeholderList .
-    op emptyStakeHolderList : -> StakeholderList [ctor] .
-    op _ _ : StakeholderList StakeholderList -> StakeholderList [ctor assoc id: emptyStakeHolderList] .
+    op emptyStakeholderList : -> StakeholderList [ctor] .
+    op _ _ : StakeholderList StakeholderList -> StakeholderList [ctor assoc id: emptyStakeholderList] .
 
     sort Slot . subsort Nat < Slot .
     sort Block .
@@ -26,15 +26,20 @@ mod STAGE-1 is
     sort BlockChainSet .
     sort NeBlockChainSet .
     subsorts BlockChain < NeBlockChainSet < BlockChainSet .
-    op emptyBlockChainSet : -> BlockChainSet                       [ctor] .
+    op emptyBlockChainSet : -> BlockChainSet                  [ctor] .
     op _;_ : BlockChainSet   BlockChainSet   -> BlockChainSet [ctor assoc comm id: emptyBlockChainSet] .
     op _;_ : NeBlockChainSet BlockChainSet -> NeBlockChainSet [ditto] .
+
+    op _ in _ : BlockChain BlockChainSet -> Bool .
+    eq CHAIN  in emptyBlockChainSet = false .
+    eq CHAIN  in (CHAIN  ; CHAINS) = true .
+    eq CHAIN1 in (CHAIN2 ; CHAINS) = (CHAIN1 in CHAINS) [owise] .
 
     vars SHS : StakeholderList .
     vars SH1 SH2 SH3 SH4 SH5 : Stakeholder .
     vars S1 S2 : Slot .
     vars CHAIN CHAIN1 CHAIN2 : BlockChain .
-    vars CHAINS : BlockChainSet .
+    vars CHAINS CHAINS1 CHAINS2 : BlockChainSet .
     vars BLOCK : Block .
     vars N : Nat .
     vars STAKE : NzNat .
@@ -70,23 +75,23 @@ mod STAGE-1 is
     subsort Stakeholder < ElectionResult .
     vars ER1 ER2 : ElectionResult .
 
-    op _ | _ : ElectionResult Probability -> ElectionResult [ctor] .
+    op _ # _ : ElectionResult Probability -> ElectionResult [ctor] .
     op bad-election : -> ElectionResult [ctor] .
-    eq (ER1 | prob(R1)) | prob(R2) = ER1 | prob(R1 * R2) .
+    eq (ER1 # prob(R1)) # prob(R2) = ER1 # prob(R1 * R2) .
 
     op total-stake : StakeholderList -> Nat .
-    eq total-stake(emptyStakeHolderList) = 0 .
+    eq total-stake(emptyStakeholderList) = 0 .
     eq total-stake(sh(Q, STAKE) SHS) = STAKE + total-stake(SHS) .
 
     --- Defined exactly as paragraph below def 4.7
     op leader-election : Slot StakeholderList -> ElectionResult .
-    rl leader-election(N, emptyStakeHolderList) => bad-election .
+    rl leader-election(N, emptyStakeholderList) => bad-election .
    crl leader-election(N, SH1 SHS)
-    => SH1 | prob(STAKE / total-stake(SH1 SHS))
+    => SH1 # prob(STAKE / total-stake(SH1 SHS))
     if sh(Q, STAKE) := SH1
      .
    crl leader-election(N, SH1 SHS)
-    => leader-election(N, SHS) | prob(1 - STAKE / total-stake(SH1 SHS))
+    => leader-election(N, SHS) # prob(1 - STAKE / total-stake(SH1 SHS))
     if sh(Q, STAKE) := SH1
      .
 
@@ -95,6 +100,23 @@ mod STAGE-1 is
     rl endorser-election(N, SHS) => leader-election(N, SHS) .
 
     op reward : Slot StakeholderList -> Rat .
+
+    sort Network .
+    vars NW : Network .
+
+    op emptyNetwork :                   -> Network [ctor] .
+    op _[_] : Stakeholder BlockChainSet -> Network [ctor] .
+    op _ _ : Network Network            -> Network [ctor assoc comm id: emptyNetwork] .
+
+    sort State .
+    vars ST : State .
+
+    op { _ | _ | _ } : Network BlockChainSet StakeholderList -> State [ctor] .
+
+   crl { (SH1[CHAINS1])         NW | CHAIN ; CHAINS2 | SHS }
+    => { (SH1[CHAIN ; CHAINS1]) NW | CHAIN ; CHAINS2 | SHS }
+    if not(CHAIN in CHAINS1)
+     .
 endm
 ```
 
@@ -130,5 +152,14 @@ reduce maxValid(   genesisBlock(SH1) block(1, SH2) block(2, SH2) block(3, SH2)
                ) .
 
 search leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>! ER1 .
-search leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>! bad-election | prob(R1) .
+search leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>! bad-election # prob(R1) .
+
+reduce genesisBlock(sh('good, 51) sh('bad, 49)) in epsilon .
+
+search { emptyNetwork | epsilon | emptyStakeholderList } =>! ST .
+search { (sh('good, 51)[emptyBlockChainSet]) sh('bad, 49)[emptyBlockChainSet]
+       | genesisBlock(sh('good, 51) sh('bad, 49))
+       | sh('good, 51) sh('bad, 49) }
+   =>! ST
+     .
 ```
