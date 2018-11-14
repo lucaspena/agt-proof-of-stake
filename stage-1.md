@@ -43,10 +43,10 @@ mod STAGE-1 is
     eq CHAIN1 in (CHAIN2 ; CHAINS) = (CHAIN1 in CHAINS) [owise] .
 
     vars S1 S2 : Slot .
-    vars CHAIN CHAIN1 CHAIN2 : BlockChain .
+    vars CHAIN CHAIN1 CHAIN2 NEWCHAIN : BlockChain .
     vars CHAINS CHAINS1 CHAINS2 : BlockChainSet .
     vars BLOCK : Block .
-    vars N : Nat .
+    vars N N1 N2 : Nat .
     vars STAKE : NzNat .
     vars R1 R2 : Rat .
 
@@ -158,14 +158,15 @@ TODO: We've hardcoded the bad stakeholder here.
      .
 ```
 
-Honest stakeholders must append a `max-valid` chain:
+Honest stakeholders must append a `max-valid` chain and immediately broadcast that chain:
 
 ```maude
-   crl { (LEADER[                            CHAIN ; CHAINS]) NW | CHAINS1 | LEADER | S1 -> S2 } # P
-    => { (LEADER[(CHAIN block(S1, LEADER)) ; CHAIN ; CHAINS]) NW | CHAINS1 | LEADER | S1 -> S2 } # P
+   crl { (LEADER[           CHAIN ; CHAINS]) NW |            CHAINS1 | LEADER | S1 -> S2 } # P
+    => { (LEADER[NEWCHAIN ; CHAIN ; CHAINS]) NW | NEWCHAIN ; CHAINS1 | LEADER | S1 -> S2 } # P
     if last-slot(CHAIN) < S1
     /\ not(CHAIN block(S1, LEADER) in CHAINS)
-    /\ max-valid(CHAIN, CHAINS) = CHAIN 
+    /\ max-valid(CHAIN, CHAINS) = CHAIN
+    /\ NEWCHAIN := (CHAIN block(S1, LEADER))
      .
 ```
 
@@ -181,6 +182,29 @@ When the slot increments, a new leader must be selected:
     if leader-election(S1, network-stakeholders(NW)) => LEADER # prob(R2)
     /\ S1 < S2
      .
+```
+
+```maude
+    sort Rewards .
+    op emptyRewards :                 -> Rewards [ctor] .
+    op _ |-> _      : Stakeholder Nat -> Rewards [ctor] .
+    op _ _          : Rewards Rewards -> Rewards [ctor assoc comm id: emptyRewards] .
+    eq (SH1 |-> N1) (SH1 |-> N2) = SH1 |-> (N1 + N2) .
+
+    op chain-rewards : BlockChain -> Rewards .
+    eq chain-rewards(epsilon) = emptyRewards .
+    eq chain-rewards(genesisBlock(SHS)) = emptyRewards .
+    eq chain-rewards(CHAIN block(S1, SH1)) = (SH1 |-> 1) chain-rewards(CHAIN) .
+```
+
+```maude
+    op end-chains(_) ~> _ # _ : BlockChainSet Rewards Probability -> State
+       [format(d d d d d n d d d)] .
+    rl { NW | CHAIN ; CHAINS | noneStakeholder | S1 -> S1 } # P
+    => end-chains(CHAIN ; CHAINS) ~> chain-rewards(max-valid(CHAIN, CHAINS)) # P .
+```
+
+```maude
 endm
 ```
 
@@ -229,7 +253,7 @@ rewrite { (sh('honest, 51)[emptyBlockChainSet]) sh('dishonest, 49)[emptyBlockCha
 search { (sh('honest, 51)[emptyBlockChainSet]) sh('dishonest, 49)[emptyBlockChainSet]
        | genesisBlock(sh('honest, 51) sh('dishonest, 49))
        | noneStakeholder
-       | 1 -> 3
+       | 1 -> 4
        } # prob(1)
    =>! ST
      .
