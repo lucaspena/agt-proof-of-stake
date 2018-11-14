@@ -169,8 +169,6 @@ Honest stakeholders must append a `max-valid` chain:
      .
 ```
 
-
-
 When the slot increments, a new leader must be selected:
 
 ```maude
@@ -181,6 +179,7 @@ When the slot increments, a new leader must be selected:
    crl { NW | CHAINS | noneStakeholder | S1     -> S2 } # prob(R1)
     => { NW | CHAINS | LEADER          | S1     -> S2 } # prob(R1 * R2)
     if leader-election(S1, network-stakeholders(NW)) => LEADER # prob(R2)
+    /\ S1 < S2
      .
 endm
 ```
