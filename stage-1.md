@@ -147,14 +147,18 @@ Stakeholders can broadcast chains they have know about:
      .
 ```
 
-The leader can choose to add a block to any of their local chains:
+A dishonest leader can choose to add a block to any of their local chains:
+TODO: We've hardcoded the bad stakeholder here.
 
 ```maude
    crl { (LEADER[                            CHAIN ; CHAINS]) NW | CHAINS1 | LEADER | S1 -> S2 } # P
     => { (LEADER[(CHAIN block(S1, LEADER)) ; CHAIN ; CHAINS]) NW | CHAINS1 | LEADER | S1 -> S2 } # P
     if last-slot(CHAIN) < S1 and not(CHAIN block(S1, LEADER) in CHAINS)
+    /\ sh('dishonest, STAKE) := LEADER
      .
 ```
+
+Honest stakeholders must append a `max-valid` chain:
 
 ```maude
    crl { (LEADER[                            CHAIN ; CHAINS]) NW | CHAINS1 | LEADER | S1 -> S2 } # P
@@ -215,16 +219,16 @@ reduce max-valid(   genesisBlock(SH1) block(1, SH2) block(2, SH2) block(3, SH2)
 search leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>! ER1 .
 search leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>! noneStakeholder # prob(R1) .
 
-reduce genesisBlock(sh('good, 51) sh('bad, 49)) in epsilon .
+reduce genesisBlock(sh('honest, 51) sh('dishonest, 49)) in epsilon .
 
 search { emptyNetwork | epsilon | noneStakeholder | 0 -> 99 } # prob(1) =>! ST .
-rewrite { (sh('good, 51)[emptyBlockChainSet]) sh('bad, 49)[emptyBlockChainSet]
-       | genesisBlock(sh('good, 51) sh('bad, 49))
+rewrite { (sh('honest, 51)[emptyBlockChainSet]) sh('dishonest, 49)[emptyBlockChainSet]
+       | genesisBlock(sh('honest, 51) sh('dishonest, 49))
        | noneStakeholder
        | 1 -> 3
        } # prob(1) .
-search { (sh('good, 51)[emptyBlockChainSet]) sh('bad, 49)[emptyBlockChainSet]
-       | genesisBlock(sh('good, 51) sh('bad, 49))
+search { (sh('honest, 51)[emptyBlockChainSet]) sh('dishonest, 49)[emptyBlockChainSet]
+       | genesisBlock(sh('honest, 51) sh('dishonest, 49))
        | noneStakeholder
        | 1 -> 3
        } # prob(1)
