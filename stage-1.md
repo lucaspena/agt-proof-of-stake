@@ -156,6 +156,17 @@ The leader can choose to add a block to any of their local chains:
      .
 ```
 
+```maude
+   crl { (LEADER[                            CHAIN ; CHAINS]) NW | CHAINS1 | LEADER | S1 -> S2 } # P
+    => { (LEADER[(CHAIN block(S1, LEADER)) ; CHAIN ; CHAINS]) NW | CHAINS1 | LEADER | S1 -> S2 } # P
+    if last-slot(CHAIN) < S1
+    /\ not(CHAIN block(S1, LEADER) in CHAINS)
+    /\ max-valid(CHAIN, CHAINS) = CHAIN 
+     .
+```
+
+
+
 When the slot increments, a new leader must be selected:
 
 ```maude

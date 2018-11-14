@@ -115,21 +115,30 @@ result State: 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
     genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
     genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
     genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
-    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad,
-    49)) block(3, sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh(
-    'bad, 49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad,
-    49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ;
-    (genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
-    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad,
-    49)) block(3, sh('bad, 49))]
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2, sh('bad, 49))
+    block(3, sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad,
+    49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2, sh('bad, 49))
+    block(3, sh('bad, 49))]
 	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
     51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
     'bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
     49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49))
-    block(1, sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51)
-    sh('bad, 49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))
+    block(1, sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))
 	| sh('bad, 49)
 	| 3 -> 3
 	}# prob(117649/1000000)
