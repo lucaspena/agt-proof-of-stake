@@ -125,9 +125,9 @@ mod STAGE-1 is
     => { (SH1[CHAIN ; CHAINS]) NW | CHAIN ; CHAINS1 | SHS | S1 }
     if not(CHAIN in CHAINS1)
      .
-   crl { (SH1[CHAIN ; CHAINS               ]) NW | CHAINS1 | SH1 SHS | S1 }
-    => { (SH1[CHAIN block(S1, SH1) ; CHAINS]) NW | CHAINS1 | SH1 SHS | S1 }
-    if last-slot(CHAIN) < S1
+   crl { (SH1[                         CHAIN ; CHAINS]) NW | CHAINS1 | SH1 SHS | S1 }
+    => { (SH1[(CHAIN block(S1, SH1)) ; CHAIN ; CHAINS]) NW | CHAINS1 | SH1 SHS | S1 }
+    if last-slot(CHAIN) < S1 and not(CHAIN block(S1, SH1) in CHAINS)
      .
 endm
 ```
