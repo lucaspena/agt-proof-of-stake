@@ -115,7 +115,8 @@ mod STAGE-1 is
     sort State .
     vars ST : State .
 
-    op { _ | _ | _ | _ } : Network BlockChainSet StakeholderList Slot -> State [ctor] .
+    op { _ | _ | _ | _ } : Network BlockChainSet StakeholderList Slot -> State
+       [ctor format (t d nt d nt d nt d nt d)] .
 
    crl { (SH1[CHAINS1])         NW | CHAIN ; CHAINS2 | SHS | S1 }
     => { (SH1[CHAIN ; CHAINS1]) NW | CHAIN ; CHAINS2 | SHS | S1 }
