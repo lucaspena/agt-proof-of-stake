@@ -129,6 +129,8 @@ mod STAGE-1 is
     => { (SH1[(CHAIN block(S1, SH1)) ; CHAIN ; CHAINS]) NW | CHAINS1 | SH1 SHS | S1 }
     if last-slot(CHAIN) < S1 and not(CHAIN block(S1, SH1) in CHAINS)
      .
+    rl { NW | CHAINS | SH1 SHS | S1     }
+    => { NW | CHAINS |     SHS | S1 + 1 } .
 endm
 ```
 
@@ -172,12 +174,12 @@ search { emptyNetwork | epsilon | emptyStakeholderList | N } =>! ST .
 rewrite { (sh('good, 51)[emptyBlockChainSet]) sh('bad, 49)[emptyBlockChainSet]
        | genesisBlock(sh('good, 51) sh('bad, 49))
        | sh('good, 51) sh('bad, 49)
-       | 3
+       | 1
        } .
 search { (sh('good, 51)[emptyBlockChainSet]) sh('bad, 49)[emptyBlockChainSet]
        | genesisBlock(sh('good, 51) sh('bad, 49))
        | sh('good, 51) sh('bad, 49)
-       | 3
+       | 1
        }
    =>! ST
      .
