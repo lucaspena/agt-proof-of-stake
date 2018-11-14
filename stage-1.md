@@ -7,11 +7,18 @@ mod STAGE-1 is
     vars Q : Qid .
 
     sort Stakeholder .
+    vars SH1 SH2 SH3 SH4 SH5 LEADER : Stakeholder .
     op sh : Qid NzNat -> Stakeholder [ctor] .
 
     sort StakeholderList . subsort Stakeholder < StakeholderList .
+    vars SHS SHS1 SHS2 : StakeholderList .
     op emptyStakeholderList : -> StakeholderList [ctor] .
     op _ _ : StakeholderList StakeholderList -> StakeholderList [ctor assoc id: emptyStakeholderList] .
+    
+    sort StakeholderMaybe .
+    vars LEADER? : StakeholderMaybe .
+    subsort Stakeholder < StakeholderMaybe .
+    op noneStakeholder : -> StakeholderMaybe [ctor] .
 
     sort Slot . subsort Nat < Slot .
     sort Block .
@@ -35,8 +42,6 @@ mod STAGE-1 is
     eq CHAIN  in (CHAIN  ; CHAINS) = true .
     eq CHAIN1 in (CHAIN2 ; CHAINS) = (CHAIN1 in CHAINS) [owise] .
 
-    vars SHS SHS1 SHS2 : StakeholderList .
-    vars SH1 SH2 SH3 SH4 SH5 : Stakeholder .
     vars S1 S2 : Slot .
     vars CHAIN CHAIN1 CHAIN2 : BlockChain .
     vars CHAINS CHAINS1 CHAINS2 : BlockChainSet .
@@ -73,14 +78,14 @@ mod STAGE-1 is
     eq maxValid(CHAIN1, CHAIN2 ; CHAINS) = maxValid(CHAIN2, CHAINS) [owise] .
 
     sort Probability .
+    vars P : Probability .
     op prob : Rat -> Probability [ctor] .
 
     sort ElectionResult .
-    subsort Stakeholder < ElectionResult .
+    subsort StakeholderMaybe < ElectionResult .
     vars ER1 ER2 : ElectionResult .
 
     op _ # _ : ElectionResult Probability -> ElectionResult [ctor] .
-    op bad-election : -> ElectionResult [ctor] .
     eq (ER1 # prob(R1)) # prob(R2) = ER1 # prob(R1 * R2) .
 
     op total-stake : StakeholderList -> Nat .
@@ -89,7 +94,7 @@ mod STAGE-1 is
 
     --- Defined exactly as paragraph below def 4.7
     op leader-election : Slot StakeholderList -> ElectionResult .
-    rl leader-election(N, emptyStakeholderList) => bad-election .
+    rl leader-election(N, emptyStakeholderList) => noneStakeholder .
    crl leader-election(N, SH1 SHS)
     => SH1 # prob(STAKE / total-stake(SH1 SHS))
     if sh(Q, STAKE) := SH1
@@ -111,27 +116,57 @@ mod STAGE-1 is
     op emptyNetwork :                   -> Network [ctor] .
     op _[_] : Stakeholder BlockChainSet -> Network [ctor] .
     op _ _ : Network Network            -> Network [ctor assoc comm id: emptyNetwork] .
+    
+    op network-stakeholders : Network -> StakeholderList .
+    eq network-stakeholders(emptyNetwork) = emptyStakeholderList .
+    eq network-stakeholders((SH1[CHAINS]) NW) = SH1 network-stakeholders(NW).
 
     sort State .
     vars ST : State .
 
-    op { _ | _ | _ | _ } : Network BlockChainSet StakeholderList Slot -> State
-       [ctor format (t d nt d nt d nt d nt d)] .
+    op { _ | _ | _ | _ -> _ } # _ 
+     : Network BlockChainSet StakeholderMaybe Slot Slot Probability -> State
+       [ctor format (t d nt d nt d nt d d d nt d d d)] .
+```
 
-   crl { (SH1[CHAINS1])         NW | CHAIN ; CHAINS2 | SHS | S1 }
-    => { (SH1[CHAIN ; CHAINS1]) NW | CHAIN ; CHAINS2 | SHS | S1 }
+Stakeholders can add broadcasted chains into their local chain set:
+
+```maude
+   crl { (SH1[CHAINS1])         NW | CHAIN ; CHAINS2 | LEADER? | S1 -> S2 } # P 
+    => { (SH1[CHAIN ; CHAINS1]) NW | CHAIN ; CHAINS2 | LEADER? | S1 -> S2 } # P
     if not(CHAIN in CHAINS1)
      .
-   crl { (SH1[CHAIN ; CHAINS]) NW |         CHAINS1 | SHS | S1 }
-    => { (SH1[CHAIN ; CHAINS]) NW | CHAIN ; CHAINS1 | SHS | S1 }
+```
+
+Stakeholders can broadcast chains they have know about:
+
+```maude
+   crl { (SH1[CHAIN ; CHAINS]) NW |         CHAINS1 | LEADER? | S1 -> S2} # P
+    => { (SH1[CHAIN ; CHAINS]) NW | CHAIN ; CHAINS1 | LEADER? | S1 -> S2} # P
     if not(CHAIN in CHAINS1)
      .
-   crl { (SH1[                         CHAIN ; CHAINS]) NW | CHAINS1 | SH1 SHS | S1 }
-    => { (SH1[(CHAIN block(S1, SH1)) ; CHAIN ; CHAINS]) NW | CHAINS1 | SH1 SHS | S1 }
-    if last-slot(CHAIN) < S1 and not(CHAIN block(S1, SH1) in CHAINS)
+```
+
+The leader can choose to add a block to any of their local chains:
+
+```maude
+   crl { (LEADER[                            CHAIN ; CHAINS]) NW | CHAINS1 | LEADER | S1 -> S2 } # P
+    => { (LEADER[(CHAIN block(S1, LEADER)) ; CHAIN ; CHAINS]) NW | CHAINS1 | LEADER | S1 -> S2 } # P
+    if last-slot(CHAIN) < S1 and not(CHAIN block(S1, LEADER) in CHAINS)
      .
-    rl { NW | CHAINS | SH1 SHS | S1     }
-    => { NW | CHAINS |     SHS | S1 + 1 } .
+```
+
+When the slot increments, a new leader must be selected:
+
+```maude
+   crl { NW | CHAINS | LEADER          | S1     -> S2 } # P
+    => { NW | CHAINS | noneStakeholder | S1 + 1 -> S2 } # P
+    if S1 < S2
+     .
+   crl { NW | CHAINS | noneStakeholder | S1     -> S2 } # prob(R1)
+    => { NW | CHAINS | LEADER          | S1     -> S2 } # prob(R1 * R2)
+    if leader-election(S1, network-stakeholders(NW)) => LEADER # prob(R2)
+     .
 endm
 ```
 
@@ -167,21 +202,21 @@ reduce maxValid(   genesisBlock(SH1) block(1, SH2) block(2, SH2) block(3, SH2)
                ) .
 
 search leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>! ER1 .
-search leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>! bad-election # prob(R1) .
+search leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>! noneStakeholder # prob(R1) .
 
 reduce genesisBlock(sh('good, 51) sh('bad, 49)) in epsilon .
 
-search { emptyNetwork | epsilon | emptyStakeholderList | N } =>! ST .
+search { emptyNetwork | epsilon | noneStakeholder | 0 -> 99 } # prob(1) =>! ST .
 rewrite { (sh('good, 51)[emptyBlockChainSet]) sh('bad, 49)[emptyBlockChainSet]
        | genesisBlock(sh('good, 51) sh('bad, 49))
-       | sh('good, 51) sh('bad, 49)
-       | 1
-       } .
+       | noneStakeholder
+       | 1 -> 3
+       } # prob(1) .
 search { (sh('good, 51)[emptyBlockChainSet]) sh('bad, 49)[emptyBlockChainSet]
        | genesisBlock(sh('good, 51) sh('bad, 49))
-       | sh('good, 51) sh('bad, 49)
-       | 1
-       }
+       | noneStakeholder
+       | 1 -> 3
+       } # prob(1)
    =>! ST
      .
 ```

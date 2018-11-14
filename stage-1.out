@@ -75,12 +75,12 @@ Solution 3 (state 5)
 ER1 --> sh('c, 1) # prob(1/10)
 
 Solution 4 (state 7)
-ER1 --> bad-election # prob(0)
+ER1 --> noneStakeholder # prob(0)
 
 No more solutions.
 ==========================================
 search in STAGE-1 : leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>!
-    bad-election # prob(R1) .
+    noneStakeholder # prob(R1) .
 
 Solution 1 (state 7)
 R1 --> 0
@@ -92,118 +92,1117 @@ result Bool: false
 ==========================================
 search in STAGE-1 : 	{emptyNetwork
 	| epsilon
-	| emptyStakeholderList
-	| N
-	} =>! ST .
+	| noneStakeholder
+	| 0 -> 99
+	}# prob(1) =>! ST .
 
 Solution 1 (state 0)
 ST --> 	{emptyNetwork
 	| epsilon
-	| emptyStakeholderList
-	| N
-	}
+	| noneStakeholder
+	| 0 -> 99
+	}# prob(1)
 
 No more solutions.
 ==========================================
 rewrite in STAGE-1 : 	{(sh('bad, 49)[emptyBlockChainSet]) sh('good, 51)[
     emptyBlockChainSet]
 	| genesisBlock(sh('good, 51) sh('bad, 49))
-	| sh('good, 51) sh('bad, 49)
-	| 1
-	} .
-result State: 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ;
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))]) sh('good,
-    51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51)
-    sh('bad, 49)) block(2, sh('bad, 49))]
-	| genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51)
-    sh('bad, 49)) block(2, sh('bad, 49))
-	| emptyStakeholderList
-	| 3
-	}
+	| noneStakeholder
+	| 1 -> 3
+	}# prob(1) .
+result State: 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad,
+    49)) block(3, sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh(
+    'bad, 49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad,
+    49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad,
+    49)) block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49))
+    block(1, sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(117649/1000000)
 ==========================================
 search in STAGE-1 : 	{(sh('bad, 49)[emptyBlockChainSet]) sh('good, 51)[
     emptyBlockChainSet]
 	| genesisBlock(sh('good, 51) sh('bad, 49))
-	| sh('good, 51) sh('bad, 49)
-	| 1
-	} =>! ST .
+	| noneStakeholder
+	| 1 -> 3
+	}# prob(1) =>! ST .
 
-Solution 1 (state 19)
-ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49))]) sh('good,
-    51)[genesisBlock(sh('good, 51) sh('bad, 49))]
-	| genesisBlock(sh('good, 51) sh('bad, 49))
-	| emptyStakeholderList
-	| 3
-	}
-
-Solution 2 (state 47)
+Solution 1 (state 670)
 ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(
-    sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))]) sh('good, 51)[
+    sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))]) sh('good, 51)[
     genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51) sh(
-    'bad, 49)) block(1, sh('good, 51))]
+    'bad, 49)) block(3, sh('bad, 49))]
 	| genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51)
-    sh('bad, 49)) block(1, sh('good, 51))
-	| emptyStakeholderList
-	| 3
-	}
+    sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(117649/1000000)
 
-Solution 3 (state 52)
+Solution 2 (state 671)
 ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(
-    sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))]) sh('good, 51)[
+    sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))]) sh('good, 51)[
     genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51) sh(
-    'bad, 49)) block(2, sh('bad, 49))]
+    'bad, 49)) block(3, sh('good, 51))]
 	| genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51)
-    sh('bad, 49)) block(2, sh('bad, 49))
-	| emptyStakeholderList
-	| 3
-	}
+    sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(122451/1000000)
 
-Solution 4 (state 75)
-ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ;
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))]) sh('good,
-    51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good, 51)
-    sh('bad, 49)) block(1, sh('good, 51))) ; genesisBlock(sh('good, 51) sh(
-    'bad, 49)) block(2, sh('bad, 49))]
-	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
-    51) sh('bad, 49)) block(1, sh('good, 51))) ; genesisBlock(sh('good, 51) sh(
-    'bad, 49)) block(2, sh('bad, 49))
-	| emptyStakeholderList
-	| 3
-	}
+Solution 3 (state 681)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(
+    sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))]) sh('good, 51)[
+    genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(122451/1000000)
 
-Solution 5 (state 80)
+Solution 4 (state 682)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(
+    sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))]) sh('good, 51)[
+    genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 5 (state 772)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(
+    sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))]) sh('good, 51)[
+    genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 6 (state 773)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(
+    sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))]) sh('good, 51)[
+    genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(132651/1000000)
+
+Solution 7 (state 10323)
+    rewrites/second)
 ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ;
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
     sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ;
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
     sh('bad, 49))]
 	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
-    51) sh('bad, 49)) block(1, sh('good, 51))) ; genesisBlock(sh('good, 51) sh(
-    'bad, 49)) block(1, sh('good, 51)) block(2, sh('bad, 49))
-	| emptyStakeholderList
-	| 3
-	}
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(117649/1000000)
 
-Solution 6 (state 89)
+Solution 8 (state 10324)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 9 (state 10566)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 10 (state 10567)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 11 (state 11230)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(117649/1000000)
+
+Solution 12 (state 11231)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 13 (state 11232)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3,
+    sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3,
+    sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('good, 51)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 14 (state 11233)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3,
+    sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3,
+    sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(2, sh('good, 51)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 15 (state 11475)
+    rewrites/second)
 ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
     genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ;
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
     sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
     genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ;
-    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
     sh('bad, 49))]
 	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
     51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
-    sh('bad, 49)) block(2, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
-    49)) block(1, sh('good, 51)) block(2, sh('bad, 49))
-	| emptyStakeholderList
-	| 3
-	}
+    sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 16 (state 11476)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(1, sh('good, 51)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 17 (state 11718)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 18 (state 11719)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(1, sh('good, 51)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(132651/1000000)
+
+Solution 19 (state 12382)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 20 (state 12383)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 21 (state 12384)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3,
+    sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3,
+    sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('good, 51)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 22 (state 12385)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3,
+    sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3,
+    sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(2, sh('good, 51)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(132651/1000000)
+
+Solution 23 (state 38972)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad,
+    49)) block(3, sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh(
+    'bad, 49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad,
+    49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad,
+    49)) block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49))
+    block(1, sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(117649/1000000)
+
+Solution 24 (state 38973)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh(
+    'bad, 49)) block(3, sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good,
+    51) sh('bad, 49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad,
+    49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51)))
+    ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh(
+    'bad, 49)) block(3, sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49))
+    block(1, sh('bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good,
+    51) sh('bad, 49)) block(2, sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 25 (state 39135)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))])
+    sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(1, sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(
+    sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3, sh('bad, 49)))
+    ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('bad, 49)) block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(117649/1000000)
+
+Solution 26 (state 39136)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(2, sh('bad, 49)) block(3, sh('good,
+    51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(2, sh('bad, 49)) block(3, sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 27 (state 39305)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh(
+    'good, 51)) block(3, sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good,
+    51) sh('bad, 49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good,
+    51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh(
+    'good, 51)) block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49))
+    block(1, sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(2, sh('good, 51)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 28 (state 39306)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh(
+    'good, 51)) block(3, sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good,
+    51) sh('bad, 49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good,
+    51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51)))
+    ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3,
+    sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh(
+    'good, 51)) block(3, sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49))
+    block(1, sh('bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good,
+    51) sh('bad, 49)) block(2, sh('good, 51)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 29 (state 39468)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(2, sh('good, 51)) block(3, sh('bad,
+    49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(2, sh('good, 51)) block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3, sh('bad, 49))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('good, 51)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 30 (state 39469)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(2, sh('good, 51)) block(3, sh('good,
+    51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(2, sh('good, 51)) block(3, sh('good,
+    51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(3, sh('good, 51))) ;
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('good, 51)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 31 (state 39943)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad,
+    49)) block(3, sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh(
+    'bad, 49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good,
+    51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad,
+    49)) block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(3, sh('bad, 49))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 32 (state 39944)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh(
+    'bad, 49)) block(3, sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good,
+    51) sh('bad, 49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad,
+    49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51)))
+    ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(
+    3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh(
+    'bad, 49)) block(3, sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(3, sh('good, 51))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 33 (state 40106)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(2, sh('bad, 49)) block(3, sh('bad,
+    49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(2, sh('bad, 49)) block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(1, sh('good, 51)) block(2, sh('bad, 49))) ; (genesisBlock(
+    sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3, sh('bad, 49)))
+    ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 34 (state 40107)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(2, sh('bad, 49)) block(3, sh('good,
+    51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(2, sh('bad, 49)) block(3, sh('good,
+    51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(1, sh('good, 51)) block(2, sh('bad, 49))) ; (genesisBlock(
+    sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3, sh('good,
+    51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))
+    block(2, sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 35 (state 40276)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh(
+    'good, 51)) block(3, sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good,
+    51) sh('bad, 49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good,
+    51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh(
+    'good, 51)) block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(3, sh('bad, 49))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 36 (state 40277)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh(
+    'good, 51)) block(3, sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good,
+    51) sh('bad, 49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good,
+    51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51)))
+    ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(
+    3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh(
+    'good, 51)) block(3, sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(3, sh('good, 51))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(132651/1000000)
+
+Solution 37 (state 40439)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(2, sh('good, 51)) block(3, sh('bad,
+    49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(2, sh('good, 51)) block(3, sh('bad,
+    49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(1, sh('good, 51)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(2, sh('good, 51)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 38 (state 40440)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(2, sh('good, 51)) block(3, sh('good,
+    51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(2, sh('good, 51)) block(3, sh('good,
+    51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(1, sh('good, 51)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3,
+    sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(2, sh('good, 51)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(132651/1000000)
+
+Solution 39 (state 44596)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2, sh('bad, 49))
+    block(3, sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad,
+    49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2, sh('bad, 49))
+    block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49))
+    block(1, sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(117649/1000000)
+
+Solution 40 (state 44597)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2, sh('bad, 49))
+    block(3, sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad,
+    49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2, sh('bad, 49))
+    block(3, sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49))
+    block(1, sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(2, sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 41 (state 44598)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('good, 51)) block(3, sh('bad, 49))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2, sh('good, 51))
+    block(3, sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad,
+    49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('good, 51)) block(3, sh('bad, 49))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2, sh('good, 51))
+    block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49))
+    block(1, sh('bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad,
+    49)) block(2, sh('good, 51)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 42 (state 44599)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('good, 51)) block(3, sh('good, 51))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2, sh('good, 51))
+    block(3, sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad,
+    49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('good, 51)) block(3, sh('good, 51))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('bad, 49)) block(2, sh('good, 51))
+    block(3, sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49))
+    block(1, sh('bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3,
+    sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'bad, 49)) block(2, sh('good, 51)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 43 (state 44600)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2, sh('bad, 49))
+    block(3, sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad,
+    49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('bad, 49))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2, sh('bad, 49))
+    block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(2, sh('bad, 49))) ; (genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3, sh('bad, 49))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(2, sh('bad, 49)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(122451/1000000)
+
+Solution 44 (state 44601)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2, sh('bad, 49))
+    block(3, sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad,
+    49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('bad, 49)) block(3, sh('good, 51))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2, sh('bad, 49))
+    block(3, sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(2, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(2, sh('bad, 49))) ; (genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3, sh('good, 51))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49)) block(3,
+    sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(2, sh('bad, 49)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 45 (state 44602)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('good, 51)) block(3, sh('bad, 49))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2, sh('good, 51))
+    block(3, sh('bad, 49))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad,
+    49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('bad, 49))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('good, 51)) block(3, sh('bad, 49))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2, sh('good, 51))
+    block(3, sh('bad, 49))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('bad, 49))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(2, sh('good, 51))) ; (genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3, sh('bad, 49))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3,
+    sh('bad, 49))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(2, sh('good, 51)) block(3, sh('bad, 49))
+	| sh('bad, 49)
+	| 3 -> 3
+	}# prob(127449/1000000)
+
+Solution 46 (state 44603)
+    rewrites/second)
+ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('good, 51)) block(3, sh('good, 51))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2, sh('good, 51))
+    block(3, sh('good, 51))]) sh('good, 51)[genesisBlock(sh('good, 51) sh('bad,
+    49)) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(3, sh('good, 51))) ; (
+    genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
+    sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(2, sh('good, 51)) block(3, sh('good, 51))) ; genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2, sh('good, 51))
+    block(3, sh('good, 51))]
+	| genesisBlock(sh('good, 51) sh('bad, 49)) ; (genesisBlock(sh('good,
+    51) sh('bad, 49)) block(1, sh('good, 51))) ; (genesisBlock(sh('good, 51)
+    sh('bad, 49)) block(2, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh(
+    'bad, 49)) block(3, sh('good, 51))) ; (genesisBlock(sh('good, 51) sh('bad,
+    49)) block(1, sh('good, 51)) block(2, sh('good, 51))) ; (genesisBlock(sh(
+    'good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(3, sh('good, 51))) ;
+    (genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('good, 51)) block(3,
+    sh('good, 51))) ; genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh(
+    'good, 51)) block(2, sh('good, 51)) block(3, sh('good, 51))
+	| sh('good, 51)
+	| 3 -> 3
+	}# prob(132651/1000000)
 
 No more solutions.
+    rewrites/second)
 Bye.
