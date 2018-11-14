@@ -46,18 +46,18 @@ reduce in STAGE-1 : (genesisBlock(SH1) block(1, SH1) block(1, SH1) block(1,
     SH1)) \ 2 .
 result BlockChain: genesisBlock(SH1) block(1, SH1)
 ==========================================
-reduce in STAGE-1 : maxValid(genesisBlock(SH1), emptyBlockChainSet) .
+reduce in STAGE-1 : max-valid(genesisBlock(SH1), emptyBlockChainSet) .
 result BlockChain: genesisBlock(SH1)
 ==========================================
-reduce in STAGE-1 : maxValid(genesisBlock(SH1), genesisBlock(SH2) block(2,
+reduce in STAGE-1 : max-valid(genesisBlock(SH1), genesisBlock(SH2) block(2,
     SH2)) .
 result BlockChain: genesisBlock(SH2) block(2, SH2)
 ==========================================
-reduce in STAGE-1 : maxValid(genesisBlock(SH1), (genesisBlock(SH2) block(2,
+reduce in STAGE-1 : max-valid(genesisBlock(SH1), (genesisBlock(SH2) block(2,
     SH2)) ; genesisBlock(SH3) block(2, SH3)) .
 result BlockChain: genesisBlock(SH2) block(2, SH2)
 ==========================================
-reduce in STAGE-1 : maxValid(genesisBlock(SH1) block(1, SH2) block(2, SH2)
+reduce in STAGE-1 : max-valid(genesisBlock(SH1) block(1, SH2) block(2, SH2)
     block(3, SH2), (genesisBlock(SH1) block(1, SH3) block(2, SH3) block(3,
     SH3)) ; (genesisBlock(SH1) block(1, SH4) block(2, SH4) block(3, SH4)) ;
     genesisBlock(SH1) block(1, SH5) block(2, SH5) block(3, SH5)) .

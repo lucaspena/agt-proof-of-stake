@@ -71,11 +71,11 @@ mod STAGE-1 is
     eq last-slot(CHAIN block(N, SH1)) = N .
 
     --- Returns the longest chain in the set breaking ties in favor of the given chain
-    op maxValid : BlockChain BlockChainSet -> BlockChain .
-    eq maxValid(CHAIN, emptyBlockChainSet) = CHAIN .
-   ceq maxValid(CHAIN1, CHAIN2 ; CHAINS) = maxValid(CHAIN1, CHAINS)
+    op max-valid : BlockChain BlockChainSet -> BlockChain .
+    eq max-valid(CHAIN, emptyBlockChainSet) = CHAIN .
+   ceq max-valid(CHAIN1, CHAIN2 ; CHAINS) = max-valid(CHAIN1, CHAINS)
     if length(CHAIN1) >= length(CHAIN2) .
-    eq maxValid(CHAIN1, CHAIN2 ; CHAINS) = maxValid(CHAIN2, CHAINS) [owise] .
+    eq max-valid(CHAIN1, CHAIN2 ; CHAINS) = max-valid(CHAIN2, CHAINS) [owise] .
 
     sort Probability .
     vars P : Probability .
@@ -189,13 +189,13 @@ reduce (block(1, SH1)) \ 1 .
 reduce (genesisBlock(SH1) block(1, SH1)) \ 1 .
 reduce (genesisBlock(SH1) block(1, SH1) block(1, SH1) block(1, SH1)) \ 2 .
 
-reduce maxValid(   genesisBlock(SH1), emptyBlockChainSet) .
-reduce maxValid(   genesisBlock(SH1), genesisBlock(SH2) block(2, SH2) ) .
-reduce maxValid(   genesisBlock(SH1), 
+reduce max-valid(   genesisBlock(SH1), emptyBlockChainSet) .
+reduce max-valid(   genesisBlock(SH1), genesisBlock(SH2) block(2, SH2) ) .
+reduce max-valid(   genesisBlock(SH1), 
                    ( genesisBlock(SH2) block(2, SH2) )
                  ; ( genesisBlock(SH3) block(2, SH3) )
                ) .
-reduce maxValid(   genesisBlock(SH1) block(1, SH2) block(2, SH2) block(3, SH2)
+reduce max-valid(   genesisBlock(SH1) block(1, SH2) block(2, SH2) block(3, SH2)
                ,   ( genesisBlock(SH1) block(1, SH3) block(2, SH3) block(3, SH3) )
                  ; ( genesisBlock(SH1) block(1, SH4) block(2, SH4) block(3, SH4) )
                  ; ( genesisBlock(SH1) block(1, SH5) block(2, SH5) block(3, SH5) )
