@@ -1,120 +1,93 @@
 ==========================================
 reduce in STAGE-1 : isValid(genesisBlock(SH1)) .
-rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
 result Bool: true
 ==========================================
 reduce in STAGE-1 : isValid(epsilon) .
-rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
 result Bool: false
 ==========================================
 reduce in STAGE-1 : isValid(genesisBlock(SH1)) .
-rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
 result Bool: true
 ==========================================
 reduce in STAGE-1 : isValid(genesisBlock(SH1)) .
-rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
 result Bool: true
 ==========================================
 reduce in STAGE-1 : length(genesisBlock(SH1)) .
-rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
 result NzNat: 1
 ==========================================
 reduce in STAGE-1 : length(epsilon) .
-rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
 result Zero: 0
 ==========================================
 reduce in STAGE-1 : length(genesisBlock(SH1)) .
-rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
 result NzNat: 1
 ==========================================
 reduce in STAGE-1 : length(genesisBlock(SH1)) .
-rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
 result NzNat: 1
 ==========================================
 reduce in STAGE-1 : length(genesisBlock(SH1) block(1, SH1) block(1, SH1) block(
     1, SH1)) .
-rewrites: 7 in 0ms cpu (0ms real) (~ rewrites/second)
 result NzNat: 4
 ==========================================
 reduce in STAGE-1 : genesisBlock(SH1) \ 1 .
-rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
 result BlockChain: epsilon
 ==========================================
 reduce in STAGE-1 : genesisBlock(SH1) \ 1 .
-rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
 result BlockChain: epsilon
 ==========================================
 reduce in STAGE-1 : genesisBlock(SH1) \ 2 .
-rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
 result BlockChain: epsilon
 ==========================================
 reduce in STAGE-1 : block(1, SH1) \ 1 .
-rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
 result BlockChain: epsilon
 ==========================================
 reduce in STAGE-1 : (genesisBlock(SH1) block(1, SH1)) \ 1 .
-rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
 result BlockChain: genesisBlock(SH1)
 ==========================================
 reduce in STAGE-1 : (genesisBlock(SH1) block(1, SH1) block(1, SH1) block(1,
     SH1)) \ 2 .
-rewrites: 3 in 0ms cpu (0ms real) (~ rewrites/second)
 result BlockChain: genesisBlock(SH1) block(1, SH1)
 ==========================================
 reduce in STAGE-1 : maxValid(genesisBlock(SH1), emptyBlockChainSet) .
-rewrites: 1 in 0ms cpu (0ms real) (~ rewrites/second)
 result BlockChain: genesisBlock(SH1)
 ==========================================
 reduce in STAGE-1 : maxValid(genesisBlock(SH1), genesisBlock(SH2) block(2,
     SH2)) .
-rewrites: 7 in 0ms cpu (0ms real) (~ rewrites/second)
 result BlockChain: genesisBlock(SH2) block(2, SH2)
 ==========================================
 reduce in STAGE-1 : maxValid(genesisBlock(SH1), (genesisBlock(SH2) block(2,
     SH2)) ; genesisBlock(SH3) block(2, SH3)) .
-rewrites: 20 in 0ms cpu (0ms real) (~ rewrites/second)
 result BlockChain: genesisBlock(SH2) block(2, SH2)
 ==========================================
 reduce in STAGE-1 : maxValid(genesisBlock(SH1) block(1, SH2) block(2, SH2)
     block(3, SH2), (genesisBlock(SH1) block(1, SH3) block(2, SH3) block(3,
     SH3)) ; (genesisBlock(SH1) block(1, SH4) block(2, SH4) block(3, SH4)) ;
     genesisBlock(SH1) block(1, SH5) block(2, SH5) block(3, SH5)) .
-rewrites: 49 in 0ms cpu (0ms real) (~ rewrites/second)
 result BlockChain: genesisBlock(SH1) block(1, SH2) block(2, SH2) block(3, SH2)
 ==========================================
 search in STAGE-1 : leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>! ER1 .
 
 Solution 1 (state 1)
-states: 3  rewrites: 19 in 0ms cpu (0ms real) (~ rewrites/second)
 ER1 --> sh('a, 3) # prob(3/10)
 
 Solution 2 (state 3)
-states: 5  rewrites: 44 in 0ms cpu (0ms real) (~ rewrites/second)
 ER1 --> sh('b, 6) # prob(3/5)
 
 Solution 3 (state 5)
-states: 7  rewrites: 60 in 0ms cpu (0ms real) (~ rewrites/second)
 ER1 --> sh('c, 1) # prob(1/10)
 
 Solution 4 (state 7)
-states: 8  rewrites: 61 in 0ms cpu (0ms real) (~ rewrites/second)
 ER1 --> bad-election # prob(0)
 
 No more solutions.
-states: 8  rewrites: 61 in 0ms cpu (0ms real) (~ rewrites/second)
 ==========================================
 search in STAGE-1 : leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) =>!
     bad-election # prob(R1) .
 
 Solution 1 (state 7)
-states: 8  rewrites: 61 in 0ms cpu (0ms real) (~ rewrites/second)
 R1 --> 0
 
 No more solutions.
-states: 8  rewrites: 61 in 0ms cpu (0ms real) (~ rewrites/second)
 ==========================================
 reduce in STAGE-1 : genesisBlock(sh('good, 51) sh('bad, 49)) in epsilon .
-rewrites: 2 in 0ms cpu (0ms real) (~ rewrites/second)
 result Bool: false
 ==========================================
 search in STAGE-1 : 	{emptyNetwork
@@ -124,7 +97,6 @@ search in STAGE-1 : 	{emptyNetwork
 	} =>! ST .
 
 Solution 1 (state 0)
-states: 1  rewrites: 0 in 0ms cpu (0ms real) (~ rewrites/second)
 ST --> 	{emptyNetwork
 	| epsilon
 	| emptyStakeholderList
@@ -132,7 +104,6 @@ ST --> 	{emptyNetwork
 	}
 
 No more solutions.
-states: 1  rewrites: 0 in 0ms cpu (0ms real) (~ rewrites/second)
 ==========================================
 rewrite in STAGE-1 : 	{(sh('bad, 49)[emptyBlockChainSet]) sh('good, 51)[
     emptyBlockChainSet]
@@ -140,7 +111,6 @@ rewrite in STAGE-1 : 	{(sh('bad, 49)[emptyBlockChainSet]) sh('good, 51)[
 	| sh('good, 51) sh('bad, 49)
 	| 1
 	} .
-rewrites: 83 in 0ms cpu (0ms real) (~ rewrites/second)
 result State: 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ;
     genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))]) sh('good,
     51)[genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51)
@@ -159,7 +129,6 @@ search in STAGE-1 : 	{(sh('bad, 49)[emptyBlockChainSet]) sh('good, 51)[
 	} =>! ST .
 
 Solution 1 (state 19)
-states: 31  rewrites: 404 in 0ms cpu (0ms real) (~ rewrites/second)
 ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49))]) sh('good,
     51)[genesisBlock(sh('good, 51) sh('bad, 49))]
 	| genesisBlock(sh('good, 51) sh('bad, 49))
@@ -168,7 +137,6 @@ ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49))]) sh('good,
 	}
 
 Solution 2 (state 47)
-states: 60  rewrites: 1283 in 0ms cpu (2ms real) (~ rewrites/second)
 ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(
     sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))]) sh('good, 51)[
     genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51) sh(
@@ -180,7 +148,6 @@ ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(
 	}
 
 Solution 3 (state 52)
-states: 63  rewrites: 1463 in 3ms cpu (2ms real) (439603 rewrites/second)
 ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(
     sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))]) sh('good, 51)[
     genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(sh('good, 51) sh(
@@ -192,7 +159,6 @@ ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; genesisBlock(
 	}
 
 Solution 4 (state 75)
-states: 83  rewrites: 2561 in 3ms cpu (4ms real) (769531 rewrites/second)
 ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
     genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ;
     genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))]) sh('good,
@@ -207,7 +173,6 @@ ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
 	}
 
 Solution 5 (state 80)
-states: 86  rewrites: 2838 in 3ms cpu (4ms real) (852764 rewrites/second)
 ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
     genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ;
     genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51)) block(2,
@@ -223,7 +188,6 @@ ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
 	}
 
 Solution 6 (state 89)
-states: 90  rewrites: 3360 in 3ms cpu (5ms real) (1009615 rewrites/second)
 ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
     genesisBlock(sh('good, 51) sh('bad, 49)) block(1, sh('good, 51))) ; (
     genesisBlock(sh('good, 51) sh('bad, 49)) block(2, sh('bad, 49))) ;
@@ -242,5 +206,4 @@ ST --> 	{(sh('bad, 49)[genesisBlock(sh('good, 51) sh('bad, 49)) ; (
 	}
 
 No more solutions.
-states: 90  rewrites: 3360 in 3ms cpu (5ms real) (1009615 rewrites/second)
 Bye.

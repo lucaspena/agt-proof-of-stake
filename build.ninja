@@ -12,7 +12,7 @@ rule tangle
                          --to "ext/pandoc-tangle/tangle.lua"
 
 rule maude
-    command = bash -c "maude -no-banner $in <(echo set show timing off .) > $out </dev/null"
+    command = maude -no-banner $in </dev/null | grep -v -F 'rewrites:' > $out
     description = Pandoc $out
     pool = console
 
