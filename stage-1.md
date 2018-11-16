@@ -90,18 +90,17 @@ mod STAGE-1 is
     eq (PT1 # prob(R1)) | (PT1 # prob(R2)) = (PT1 # prob(R1 + R2)) .
     eq (PT1 # prob(0)) | PT2 = PT2 .
 
-    sort ElectionResult PElectionResult .
-    subsort StakeholderMaybe < ElectionResult < PElectionResult < PTerm .
-    op _ # _ : PElectionResult Probability     -> PElectionResult [ctor] .
-    op _ | _ : PElectionResult PElectionResult -> PElectionResult [ditto] .
-    vars ER1 ER2 : ElectionResult .
+    sort PStakeholderMaybe .
+    subsort StakeholderMaybe < PStakeholderMaybe < PTerm .
+    op _ # _ : PStakeholderMaybe Probability     -> PStakeholderMaybe [ctor] .
+    op _ | _ : PStakeholderMaybe PStakeholderMaybe -> PStakeholderMaybe [ditto] .
 
     op total-stake : StakeholderList -> Nat .
     eq total-stake(emptyStakeholderList) = 0 .
     eq total-stake(sh(Q, STAKE) SHS) = STAKE + total-stake(SHS) .
 
     --- Defined exactly as paragraph below def 4.7
-    op leader-election : Slot StakeholderList -> PElectionResult .
+    op leader-election : Slot StakeholderList -> PStakeholderMaybe .
     eq leader-election(N, emptyStakeholderList) = noneStakeholder .
    ceq leader-election(N, SH1 SHS)
      = (SH1 # prob(R1)) | (leader-election(N, SHS) # prob(1 - R1))
@@ -114,7 +113,7 @@ mod STAGE-1 is
      .
 
     --- Endorser election is the same as leader election as per first 2 paragraphs of Section 7.1
-    op endorser-election : Slot StakeholderList -> ElectionResult .
+    op endorser-election : Slot StakeholderList -> PStakeholderMaybe .
     rl endorser-election(N, SHS) => leader-election(N, SHS) .
 
     op reward : Slot StakeholderList -> Rat .
@@ -140,7 +139,7 @@ mod STAGE-1 is
     eq PT1 | impossible = PT1 .
 
     op { _ | _ | _ | _ -> _ }
-     : Network BlockChainSet PElectionResult Slot Slot -> State
+     : Network BlockChainSet PStakeholderMaybe Slot Slot -> State
        [ctor format (t d nt d nt d nt d d d nt d)] .
 ```
 
