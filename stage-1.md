@@ -276,11 +276,4 @@ rewrite { (sh('honest, 51)[emptyBlockChainSet]) sh('dishonest, 49)[emptyBlockCha
        | noneStakeholder
        | 1 -> 4
        } .
-search { (sh('honest, 51)[emptyBlockChainSet]) sh('dishonest, 49)[emptyBlockChainSet]
-       | genesisBlock(sh('honest, 51) sh('dishonest, 49))
-       | noneStakeholder
-       | 1 -> 3
-       } # prob(1)
-   =>! PST:PState
-     .
 ```
