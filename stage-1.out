@@ -64,29 +64,99 @@ reduce in STAGE-1 : max-valid(genesisBlock(SH1) block(1, SH2) block(2, SH2)
 result BlockChain: genesisBlock(SH1) block(1, SH2) block(2, SH2) block(3, SH2)
 ==========================================
 reduce in STAGE-1 : leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1)) .
-result PStakeholderMaybe: (sh('a, 3) # prob(3/10)) | (sh('b, 6) # prob(3/5)) |
-    (sh('c, 1) # prob(1/10))
+result ElectionResult: (sh('a, 3) # prob(3/10)) | (sh('b, 6) # prob(3/5)) | (
+    sh('c, 1) # prob(1/10))
+==========================================
+reduce in STAGE-1 : leader-elections(1, 4, sh('a, 3) sh('b, 6) sh('c, 1)) .
+result ElectionResult: ((sh('a, 3) sh('a, 3) sh('a, 3)) # prob(27/1000)) | ((
+    sh('a, 3) sh('a, 3) sh('b, 6)) # prob(27/500)) | ((sh('a, 3) sh('a, 3) sh(
+    'c, 1)) # prob(9/1000)) | ((sh('a, 3) sh('b, 6) sh('a, 3)) # prob(27/500))
+    | ((sh('a, 3) sh('b, 6) sh('b, 6)) # prob(27/250)) | ((sh('a, 3) sh('b, 6)
+    sh('c, 1)) # prob(9/500)) | ((sh('a, 3) sh('c, 1) sh('a, 3)) # prob(
+    9/1000)) | ((sh('a, 3) sh('c, 1) sh('b, 6)) # prob(9/500)) | ((sh('a, 3)
+    sh('c, 1) sh('c, 1)) # prob(3/1000)) | ((sh('b, 6) sh('a, 3) sh('a, 3)) #
+    prob(27/500)) | ((sh('b, 6) sh('a, 3) sh('b, 6)) # prob(27/250)) | ((sh('b,
+    6) sh('a, 3) sh('c, 1)) # prob(9/500)) | ((sh('b, 6) sh('b, 6) sh('a, 3)) #
+    prob(27/250)) | ((sh('b, 6) sh('b, 6) sh('b, 6)) # prob(27/125)) | ((sh('b,
+    6) sh('b, 6) sh('c, 1)) # prob(9/250)) | ((sh('b, 6) sh('c, 1) sh('a, 3)) #
+    prob(9/500)) | ((sh('b, 6) sh('c, 1) sh('b, 6)) # prob(9/250)) | ((sh('b,
+    6) sh('c, 1) sh('c, 1)) # prob(3/500)) | ((sh('c, 1) sh('a, 3) sh('a, 3)) #
+    prob(9/1000)) | ((sh('c, 1) sh('a, 3) sh('b, 6)) # prob(9/500)) | ((sh('c,
+    1) sh('a, 3) sh('c, 1)) # prob(3/1000)) | ((sh('c, 1) sh('b, 6) sh('a, 3))
+    # prob(9/500)) | ((sh('c, 1) sh('b, 6) sh('b, 6)) # prob(9/250)) | ((sh('c,
+    1) sh('b, 6) sh('c, 1)) # prob(3/500)) | ((sh('c, 1) sh('c, 1) sh('a, 3)) #
+    prob(3/1000)) | ((sh('c, 1) sh('c, 1) sh('b, 6)) # prob(3/500)) | ((sh('c,
+    1) sh('c, 1) sh('c, 1)) # prob(1/1000))
 ==========================================
 reduce in STAGE-1 : genesisBlock(sh('honest, 51) sh('dishonest, 49)) in epsilon
     .
 result Bool: false
 ==========================================
-search in STAGE-1 : 	{emptyNetwork
-	| epsilon
-	| noneStakeholder
-	| 0 -> 99
-	} # prob(1) =>! ST .
-
-No solution.
-==========================================
-rewrite in STAGE-1 : 	{(sh('dishonest, 49)[emptyBlockChainSet]) sh('honest,
+rewrite in STAGE-1 : 	[(sh('dishonest, 49)[emptyBlockChainSet]) sh('honest,
     51)[emptyBlockChainSet]
 	| genesisBlock(sh('honest, 51) sh('dishonest, 49))
-	| noneStakeholder
-	| 1 -> 4
-	} .
-result PState: (reward(sh('dishonest, 49) |-> 1) # prob(2401/10000)) | (reward(
-    sh('honest, 51) |-> 2) # prob(127449/500000)) | (reward(sh('honest, 51) |->
-    3) # prob(132651/1000000)) | (reward((sh('dishonest, 49) |-> 1) sh('honest,
-    51) |-> 1) # prob(372351/1000000))
+	| sh('honest, 51) sh('honest, 51)
+	| 0 -> 4
+	] .
+result State: 	{(sh('dishonest, 49)[emptyBlockChainSet]) sh('honest, 51)[
+    genesisBlock(sh('honest, 51) sh('dishonest, 49)) ; genesisBlock(sh('honest,
+    51) sh('dishonest, 49)) ; (genesisBlock(sh('honest, 51) sh('dishonest, 49))
+    block(1, sh('honest, 51))) ; (genesisBlock(sh('honest, 51) sh('dishonest,
+    49)) block(1, sh('honest, 51))) ; genesisBlock(sh('honest, 51) sh(
+    'dishonest, 49)) block(1, sh('honest, 51)) block(2, sh('honest, 51))]
+	| genesisBlock(sh('honest, 51) sh('dishonest, 49)) ; (genesisBlock(sh(
+    'honest, 51) sh('dishonest, 49)) block(1, sh('honest, 51))) ; genesisBlock(
+    sh('honest, 51) sh('dishonest, 49)) block(1, sh('honest, 51)) block(2, sh(
+    'honest, 51))
+	| emptyStakeholderList
+	| 3 -> 4
+	}
+==========================================
+search in STAGE-1 : 	[(sh('dishonest, 49)[emptyBlockChainSet]) sh('honest,
+    51)[emptyBlockChainSet]
+	| genesisBlock(sh('honest, 51) sh('dishonest, 49))
+	| sh('dishonest, 49) sh('dishonest, 49) sh('honest, 51) sh('dishonest,
+    49)
+	| 0 -> 5
+	] =>! ST .
+
+Solution 1 (state 274)
+ST --> reward(sh('honest, 51) |-> 1)
+
+Solution 2 (state 654)
+    rewrites/second)
+ST --> reward((sh('dishonest, 49) |-> 1) sh('honest, 51) |-> 1)
+
+Solution 3 (state 1134)
+    rewrites/second)
+ST --> reward(sh('dishonest, 49) |-> 1)
+
+Solution 4 (state 2463)
+    rewrites/second)
+ST --> reward((sh('dishonest, 49) |-> 2) sh('honest, 51) |-> 1)
+
+Solution 5 (state 2569)
+    rewrites/second)
+ST --> reward(sh('dishonest, 49) |-> 2)
+
+Solution 6 (state 5927)
+    rewrites/second)
+ST --> reward(sh('dishonest, 49) |-> 3)
+
+Solution 7 (state 11209)
+    rewrites/second)
+ST --> reward((sh('dishonest, 49) |-> 3) sh('honest, 51) |-> 1)
+
+No more solutions.
+    rewrites/second)
+==========================================
+reduce in TEST : downTerm(getTerm(metaSearch(upModule('TEST, false), upTerm(
+    	[(sh('dishonest, 49)[emptyBlockChainSet]) sh('honest, 51)[
+    emptyBlockChainSet]
+	| genesisBlock(sh('honest, 51) sh('dishonest, 49))
+	| sh('dishonest, 49) sh('dishonest, 49) sh('honest, 51) sh('dishonest,
+    49)
+	| 0 -> 5
+	]), 'ST:State, nil, '!, unbounded, 0)), '0.Nat) .
+result Constant: '0.Nat
 Bye.
