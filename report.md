@@ -93,7 +93,8 @@ At a high-level, the algorithm elects a leader for each slot. That leader should
 add all publicly broadcasted blockhains into a local set. Then, the leader will
 then create a block for that slot and append that block to the longest block in
 her local set. Finally, she should broadcast that blockchain out to all other
-stakeholders.
+stakeholders, and all stakeholders should update their local blockchains with
+the newly broadcasted blockchain from the leader.
 
 There are many subtleties with this algorithm. First, we need to fairly elect a
 leader for each slot. This is done proportional to the amount of stake each
@@ -104,11 +105,41 @@ $$ p_i = \frac{s_i}{\sum_{k=1}^n s_k} $$
 
 To implement this, the protocol flips a biased coin based on the relative stake
 of participant $j$ in relation to participants $j+1,\ldots,n$, provided no
-leader has been chosen yet.
+leader has been chosen yet. This ensures the leader of each slot is elected with
+the desired probability.
 
 The next intricacy of this algorithm involves the reward system given to the
 stakeholders. We first analyze a reward scheme that does not incentivize
 truthfulness, then show how this reward scheme can be modified.
+TODO: need more here
+
+## Nondeterminism
+
+In order for analysis of this protocol to be interesting, an adversary must have
+some potential flexibility with how he or she interacts with the
+protocol. First, note that a crucial assumption present in
+[Ouroboros][ouroboros] (and most blockchain protocols) is that at least 51% of
+the participants are acting truthfully. While the practicality of this
+assumption can be argued, it is out of the scope of this paper. Thus, we will
+assume at least 51% follow the protocol precisely as outlined in the beginning
+of this section, and we will discuss potential behaviors of the "adversarial
+49%" in this subsection.
+
+An adversary has multiple ways to deviate from the protocol. For example, he
+need not update his local blockchain set accordingly with all blockchains
+previously leaders had broadcasted. However, this makes it more unlikely that
+the chain the adversary adds his created block to will ultimately be the longest
+chain in an epoch. Thus, with the first reward system mentioned, the adversary
+will never be incentivized to not update his local blockchain set.
+
+Next, crucially, the adversary can choose not to immediately broadcast his
+updated blockchain to all other participants of the protocol. This is the main
+adversarial behavior we analyze in this paper. By doing this, an adversary
+potentially could mask the actual longest blockchain until the end of the epoch,
+and force honest leaders to append blocks to what will turn out to not be the
+longest blockchain. Thus, the adversary may yield a larger reward with this
+dishonest behavior, as he would have created a larger percentage of blocks on
+the ultimately longest chain.
 
 ## Analysis
 
