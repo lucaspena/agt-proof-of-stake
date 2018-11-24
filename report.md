@@ -144,3 +144,18 @@ the ultimately longest chain.
 ## Analysis
 
 ## Conclusion and Future Work
+
+There are many directions for future work with this project. Most such areas
+involve tightening the abstraction between our Maude implementation and the
+Ouroboros protocol. The most immediate adjustment would be to allow participants
+to have dynamic stake rather than static stake. This allows participants to add
+or remove the stake they invest in this protocol, which is a very desirable
+property in these proof of stake protocols, as well as a property that full
+Ouroboros has.
+
+Another way to tighten the abstraction would be to consider actual transactions
+in a particular block. The main intricacy this adds is that the full Ouroboros
+protocol includes elected \textit{endorsers} that confirm the validity of
+transactions. Endorsers are elected and rewarded similarly to block leaders in
+the protocol, but they still add another layer of complexity, as endorses
+themselves can be either truthful or not.
