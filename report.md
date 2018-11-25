@@ -71,11 +71,9 @@ the prtocol for our analysis.
 
 ## Preliminaries
 
-TODO: figures with Maude definitions for each definition?
-
 In this section, we go into detail regarding definitions needed to understand
 the speicific algorithm we are modelling. Most definitions are taken from
-[Ouroboros][ouroboros].
+[Ouroboros][ouroboros]. We also show how each of these are defined in Maude.
 
 \begin{definition}[Stakeholder]
 A stakeholder is a participant of the Ouroboros proof of stake algorithm.
@@ -86,9 +84,22 @@ Stake is the amount of money a stakeholder has put up as part of the Ouroboros
 algorithm. By definition, we assume the stake is nonzero for each stakeholder.
 \end{definition}
 
+\begin{verbatim}
+sort Stakeholder .
+op sh : Qid NzNat -> Stakeholder [ctor] .
+\end{verbatim}
+
+A \texttt{Qid} is a quoted identifier in Maude. We use it here to name the
+stakeholder. \texttt{NzNat} represents the nonzero natural number corresponding
+to the stake of the stakeholder.
+
 \begin{definition}[Slot]
 A slot is a discrete unit of time used for the protocol. We use natural numbers to model slots.
 \end{definition}
+
+\begin{verbatim}
+sort Slot . subsort Nat < Slot .
+\end{verbatim}
 
 \begin{definition}[Block]
 A block is generated at a particular slot $sl_i$ by a stakeholder $s_i$.
@@ -96,13 +107,48 @@ It contains information regarding the slot number at which the block was created
 as well as which stakeholder created the block.
 \end{definition}
 
-\begin{definition}[Blockchain]
-A blockchain is a sequence of blocks with strictly increasing slots.
+\begin{verbatim}
+sort Block .
+op block : Slot Stakeholder -> Block [ctor] .
+\end{verbatim}
+
+\begin{definition}[Genesis Block]
+The genesis block only contains the list of stakeholders participating in the
+protocol.
 \end{definition}
+
+\begin{definition}[Blockchain]
+A blockchain is any sequence of blocks.
+\end{definition}
+
+\begin{verbatim}
+sort BlockChain .
+subsorts Block < BlockChain .
+op genesisBlock : StakeholderList       -> BlockChain [ctor] .
+op _ _          : BlockChain BlockChain -> BlockChain 
+                  [ctor assoc id: epsilon] .
+op epsilon      :                       -> BlockChain [ctor] .
+\end{verbatim}
+
+\begin{definition}[Valid Blockchain]
+A valid blockchain is a blockchain with strictly increasing slots that is rooted
+at the genesis block.
+\end{definition}
+
+\begin{verbatim}
+op isValid : BlockChain -> Bool .
+eq isValid(genesisBlock(SHS)) = true .
+eq isValid(genesisBlock(SHS) BLOCK) = true .
+eq isValid(CHAIN block(S1, SH1) block(S2, SH2)) = S1 < S2 .
+eq isValid(epsilon) = false .
+\end{verbatim}
 
 \begin{definition}[Epoch]
 An epoch is a set of $R$ adjacent slots $S = \{sl_1, \ldots, sl_R\}$.
 \end{definition}
+
+We do not define an epochs explicitly in Maude. Instead, we model it simply by
+using two \texttt{Slot}s representing the start slot and end slot in an epoch.
 
 ## Algorithm
 
@@ -165,6 +211,39 @@ we model all honest stakeholders as one stakeholder with 51% of stake:
 \texttt{sh('honest, 51)}. Similarly, since we can assume all dishonest
 participants adversarially collude, we model all dishonest stakeholders as one
 stakeholder with 49% of stake: \texttt{sh('dishonest, 49)}.
+
+Before covering the analysis of the protocol, we provide a couple more
+definitions:
+
+\begin{definition}[Network]
+A network contains all stakeholders participating in the protocol, as well as
+all possible blockchains each stakeholder has in scope at any given point.
+\end{definition}
+
+\begin{verbatim}
+sort Network .
+op emptyNetwork :                   -> Network [ctor] .
+op _[_] : Stakeholder BlockChainSet -> Network [ctor] .
+op _ _ : Network Network            -> Network 
+         [ctor assoc comm id: emptyNetwork] .
+\end{verbatim}
+
+\begin{definition}[State]
+The state of a system contains the current network, all publicly available
+blockchains, a list of stakeholders that will be the leader for all remaining
+slots, a beginning slot, and an ending slot. The state is either "active" (curly
+braces) or "frozen" (square brackets).
+\end{definition}
+
+\begin{verbatim}
+sort State .
+op { _ | _ | _ | _ -> _ }
+ : Network BlockChainSet StakeholderList Slot Slot -> State
+   [ctor] .
+op [ _ | _ | _ | _ -> _ ]
+ : Network BlockChainSet StakeholderList Slot Slot -> State
+   [ctor] .
+\end{verbatim}
 
 The deterministic behavior for the honest participants is as follows:
 
