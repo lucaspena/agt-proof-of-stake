@@ -44,6 +44,21 @@ conclude and discuss opportunities for future work.
 
 # Maude System
 
+The Maude System is a programming language often used for modeling and
+verification of systems. It has been used to verify a wide spectrum of systems,
+from biological systems ([Pathway Logic][pathwaylogic]), to cryptographic
+protocols ([Maude NPA][NPA]), to concensus algorithms, to programming languages
+([KFramework][kmaude]), and so on (see [twentyears] for a comprehensive survey
+of such applications). Maude allows specifying systems, including their
+non-deterministic behaviours, as a transition system using rewriting logic. For
+model checking purposes they provide a very high level formalism for
+axiomatizing possibly infinite Kripke structures. This is exploited in Maude for
+formal analysis purposes, since concurrent systems specified as rewrite theories
+can be analyzed using Maude's LTL model checker and other model checkers and
+theorem proving tools in Maude's formal environment.
+
+TODO: more here
+
 # Ouroboros
 
 In this section we discuss the proof of stake algorithm used in Ouroboros, as
@@ -55,6 +70,8 @@ system, endorsers of transactions, and more. We focus on the simplest version of
 the prtocol for our analysis.
 
 ## Preliminaries
+
+TODO: figures with Maude definitions for each definition?
 
 In this section, we go into detail regarding definitions needed to understand
 the speicific algorithm we are modelling. Most definitions are taken from
@@ -143,7 +160,28 @@ the ultimately longest chain.
 
 ## Analysis
 
-## Conclusion and Future Work
+Since we assume all honest participants deterministically follow the protocol,
+we model all honest stakeholders as one stakeholder with 51% of stake:
+\texttt{sh('honest, 51)}. Similarly, since we can assume all dishonest
+participants adversarially collude, we model all dishonest stakeholders as one
+stakeholder with 49% of stake: \texttt{sh('dishonest, 49)}.
+
+The deterministic behavior for the honest participants is as follows:
+
+TODO: rules for honest
+
+This states
+
+The rules for the dishonest participants is as follows:
+
+TODO: rules for dishonest
+
+These rules emulate the nondeterminism mentioned in the previous
+section. Specifically,
+
+## Conclusion
+
+## Future Work
 
 There are many directions for future work with this project. Most such areas
 involve tightening the abstraction between our Maude implementation and the
@@ -159,3 +197,19 @@ protocol includes elected \textit{endorsers} that confirm the validity of
 transactions. Endorsers are elected and rewarded similarly to block leaders in
 the protocol, but they still add another layer of complexity, as endorses
 themselves can be either truthful or not.
+
+An alternative area for future work is considering other proof of stake
+protocols. The main competitor to Ouroboros is Casper (TODO: cite) which is a
+proof of stake protocol developed by the Ethereum Foundation. Casper greatly
+differs from Ouroboros in a few areas. Primarily, it is developed as a "finality
+gadget" that finalizes blocks in a proof of stake manner \textit{on top of} a
+proof of work scheme.
+
+Casper also requires a $\frac23$ majority instead of a $\frac12$ majority as in
+Ouroboros. However, the $\frac23$ majority need only be \textit{rational} as
+opposed to non-adversarial in Ouroboros (TODO: check this).  All these
+differences lead to a much different protocol, and analyzing game-theoretic
+properties of Casper is definitely worthy of its own rigorous treatment.
+
+Finally, we also would like to consider different game theoretic properties of
+this protocol. TODO: more here
