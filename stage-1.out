@@ -112,51 +112,9 @@ result State: 	{(sh('dishonest, 49)[emptyBlockChainSet]) sh('honest, 51)[
 	| 3 -> 4
 	}
 ==========================================
-search in STAGE-1 : 	[(sh('dishonest, 49)[emptyBlockChainSet]) sh('honest,
-    51)[emptyBlockChainSet]
-	| genesisBlock(sh('honest, 51) sh('dishonest, 49))
-	| sh('dishonest, 49) sh('dishonest, 49) sh('honest, 51) sh('dishonest,
-    49)
-	| 0 -> 5
-	] =>! ST .
-
-Solution 1 (state 274)
-ST --> reward(sh('honest, 51) |-> 1)
-
-Solution 2 (state 654)
-    rewrites/second)
-ST --> reward((sh('dishonest, 49) |-> 1) sh('honest, 51) |-> 1)
-
-Solution 3 (state 1134)
-    rewrites/second)
-ST --> reward(sh('dishonest, 49) |-> 1)
-
-Solution 4 (state 2463)
-    rewrites/second)
-ST --> reward((sh('dishonest, 49) |-> 2) sh('honest, 51) |-> 1)
-
-Solution 5 (state 2569)
-    rewrites/second)
-ST --> reward(sh('dishonest, 49) |-> 2)
-
-Solution 6 (state 5927)
-    rewrites/second)
-ST --> reward(sh('dishonest, 49) |-> 3)
-
-Solution 7 (state 11209)
-    rewrites/second)
-ST --> reward((sh('dishonest, 49) |-> 3) sh('honest, 51) |-> 1)
-
-No more solutions.
-    rewrites/second)
-==========================================
-reduce in TEST : downTerm(getTerm(metaSearch(upModule('TEST, false), upTerm(
-    	[(sh('dishonest, 49)[emptyBlockChainSet]) sh('honest, 51)[
-    emptyBlockChainSet]
-	| genesisBlock(sh('honest, 51) sh('dishonest, 49))
-	| sh('dishonest, 49) sh('dishonest, 49) sh('honest, 51) sh('dishonest,
-    49)
-	| 0 -> 5
-	]), 'ST:State, nil, '!, unbounded, 0)), '0.Nat) .
-result Constant: '0.Nat
+reduce in EXPECTATIONS : best-reponse-dishonest((sh('dishonest, 49)[
+    emptyBlockChainSet]) sh('honest, 51)[emptyBlockChainSet], genesisBlock(sh(
+    'honest, 51) sh('dishonest, 49)), 0, 3) .
+result Rewards: (sh('dishonest, 49) |-> 1355683/2000000) sh('honest, 51) |->
+    644317/2000000
 Bye.

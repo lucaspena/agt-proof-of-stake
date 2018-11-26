@@ -3,7 +3,6 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{fontspec,xltxtra,xunicode}
-\usepackage{geometry}
 \usepackage{hyperref}
 \usepackage{etoolbox}
 

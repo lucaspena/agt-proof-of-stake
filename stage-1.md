@@ -14,7 +14,7 @@ mod STAGE-1 is
     vars SHS SHS1 SHS2 : StakeholderList .
     op emptyStakeholderList : -> StakeholderList [ctor] .
     op _ _ : StakeholderList StakeholderList -> StakeholderList [ctor assoc id: emptyStakeholderList] .
-    
+
     sort StakeholderMaybe .
     vars LEADER? : StakeholderMaybe .
     subsort Stakeholder < StakeholderMaybe .
@@ -138,7 +138,7 @@ mod STAGE-1 is
     op emptyNetwork :                   -> Network [ctor] .
     op _[_] : Stakeholder BlockChainSet -> Network [ctor] .
     op _ _ : Network Network            -> Network [ctor assoc comm id: emptyNetwork] .
-    
+
     op network-stakeholders : Network -> StakeholderList .
     eq network-stakeholders(emptyNetwork) = emptyStakeholderList .
     eq network-stakeholders((SH1[CHAINS]) NW) = SH1 network-stakeholders(NW).
@@ -152,7 +152,7 @@ mod STAGE-1 is
     op [ _ | _ | _ | _ -> _ ]
      : Network BlockChainSet StakeholderList Slot Slot -> State
        [ctor format (t d nt d nt d nt d d d nt d)] .
-       
+
     op state-get-chains : State -> BlockChainSet .
     eq state-get-chains([ NW | CHAINS | SHS | S1 -> S2 ]) = CHAINS .
     eq state-get-chains({ NW | CHAINS | SHS | S1 -> S2 }) = CHAINS .
@@ -216,10 +216,25 @@ When the slot increments, a new leader must be selected:
 
 ```maude
     sort Rewards .
+    vars REWARDS : Rewards .
     op emptyRewards :                 -> Rewards [ctor] .
     op _ |-> _      : Stakeholder Rat -> Rewards [ctor] .
     op _ _          : Rewards Rewards -> Rewards [ctor assoc comm id: emptyRewards] .
     eq (SH1 |-> R1) (SH1 |-> R2) = SH1 |-> (R1 + R2) .
+
+    op total-rewards : Rewards -> Rat .
+    eq total-rewards((SH1 |-> R2) REWARDS) = R2 + total-rewards(REWARDS) .
+    eq total-rewards(emptyRewards)         = 0 .
+
+    op normalize-rewards : Rewards Rat -> Rewards .
+    vars TOTAL : NzRat .
+    eq normalize-rewards((SH1 |-> R2) REWARDS, 0)
+     = emptyRewards
+     .
+    eq normalize-rewards((SH1 |-> R2) REWARDS, TOTAL)
+     = (SH1 |-> (R2 / TOTAL)) normalize-rewards(REWARDS, TOTAL)
+     .
+    eq normalize-rewards(emptyRewards, TOTAL) = emptyRewards .
 
     op chain-rewards : BlockChain -> Rewards .
     eq chain-rewards(epsilon) = emptyRewards .
@@ -267,22 +282,15 @@ reduce leader-elections(1, 4, sh('a, 3) sh('b, 6) sh('c, 1)) .
 reduce genesisBlock(sh('honest, 51) sh('dishonest, 49)) in epsilon .
 
 rewrite [ (sh('honest, 51)[emptyBlockChainSet]) sh('dishonest, 49)[emptyBlockChainSet]
-       | genesisBlock(sh('honest, 51) sh('dishonest, 49))
-       | sh('honest, 51) sh('honest, 51)
-       | 0 -> 4
-       ] .
----- search [ (sh('honest, 51)[emptyBlockChainSet]) sh('dishonest, 49)[emptyBlockChainSet]
-----        | genesisBlock(sh('honest, 51) sh('dishonest, 49))
-----        | sh('dishonest, 49) sh('dishonest, 49) sh('honest, 51) sh('dishonest, 49)
-----        | 0 -> 5
-----        ]
-----    =>! ST
-----        .
+        | genesisBlock(sh('honest, 51) sh('dishonest, 49))
+        | sh('honest, 51) sh('honest, 51)
+        | 0 -> 4
+        ] .
 
 mod EXPECTATIONS is
     protecting META-LEVEL .
     protecting STAGE-1 .
-    
+
     vars SHS SHS1 : StakeholderList .
     vars SH SH1 SH2 : Stakeholder .
     vars ST : State .
@@ -302,12 +310,15 @@ mod EXPECTATIONS is
     vars PR1 PR2 : PRewards .
     op _ # _ : Rewards Probability -> PRewards [ctor] .
     op _ | _ : PRewards PRewards -> PRewards [ctor assoc comm] .
-    
+
     op E[ _ ] : PRewards -> Rewards .
-    eq E[ (((SH1 |-> R1) REWARDS) # prob(R2)) | PR2 ]
-     = (SH1 |-> R1 * R2) E[ (REWARDS # prob(R2)) | PR2 ] .
-    eq E[ (emptyRewards # prob(R1)) | PR2 ]
-     = E[ PR2 ]
+    eq E[ PR1 | PR2 ] = E[ PR1 ] E[ PR2 ] .
+
+    eq E[ emptyRewards # prob(R2) ]
+     = emptyRewards
+     .
+    eq E[ ((SH1 |-> R1) REWARDS) # prob(R2) ]
+     = (SH1 |-> R1 * R2) E[ (REWARDS) # prob(R2) ]
      .
 
     op max-rewards : Rewards Rewards -> Rewards .
@@ -319,16 +330,18 @@ mod EXPECTATIONS is
     if (sh('dishonest, S) |-> R1) REWARDS1REST := REWARDS1
     /\ (sh('dishonest, S) |-> R2) REWARDS2REST := REWARDS2
      .
-     
+
     sort RewardsSet .
+    vars REWARDSSET : RewardsSet .
     subsort Rewards < RewardsSet .
     op emptyRewardsSet : -> RewardsSet               [ctor] .
     op _;_ : RewardsSet RewardsSet -> RewardsSet [ctor assoc comm id: emptyRewardsSet] .
 
-    op maximize-chain-reward   : State -> Rewards .
-    eq maximize-chain-reward(ST) = maximize-chain-reward.n(ST, 0) .
+    op maximize-chain-reward     : State -> Rewards .
+    op maximize-chain-reward.n   : State Nat -> RewardsSet .
+    op maximize-chain-reward.max : RewardsSet -> Rewards .
+    eq maximize-chain-reward(ST) = maximize-chain-reward.max(maximize-chain-reward.n(ST, 0)) .
 
-    op maximize-chain-reward.n : State Nat -> RewardsSet .
    ceq maximize-chain-reward.n(ST, N)
      = emptyRewardsSet
     if RTRIPLE? := metaSearch(upModule('EXPECTATIONS, false)
@@ -342,10 +355,7 @@ mod EXPECTATIONS is
      /\ RTRIPLE? == failure
       .
    ceq maximize-chain-reward.n(ST, N)
-     = chain-rewards(max-valid( epsilon
-                              , state-get-chains(downTerm( getTerm(RTRIPLE?)
-                                                         , error('bad-term)
-                    )         )                 )        )
+     = normalize-rewards(REWARDS, total-rewards(REWARDS))
      ; maximize-chain-reward.n(ST, N + 1)
     if RTRIPLE? := metaSearch(upModule('EXPECTATIONS, false)
                              , upTerm(ST)
@@ -356,55 +366,57 @@ mod EXPECTATIONS is
                              , N
                              )
      /\ RTRIPLE? =/= failure
+     /\ REWARDS := chain-rewards(max-valid( epsilon
+                              , state-get-chains(downTerm( getTerm(RTRIPLE?)
+                                                         , error('bad-term)
+                    )         )                 )        )
       .
 
-
----    eq maximize-chain-reward(ST, N)      
----     = chain-rewards(max-valid( epsilon
----                              , state-get-chains(downTerm( getTerm(metaSearch(upModule('EXPECTATIONS, false)
----                                                                             , upTerm(ST)
----                                                                             , 'ST:State
----                                                                             , nil
----                                                                             , '!
----                                                                             , unbounded
----                                                                             , 0
----                                                                 )           )
----                                                        , error('bad-term)
----                    )         )                )        ) .
-
-    op xxx     : Network BlockChainSet Slot Slot                -> Rewards .
-    op $xxx.er : Network BlockChainSet ElectionResult Slot Slot -> PRewards .
-
-    eq xxx(NW, CHAINS, S1, S2)
-     = E[ $xxx.er(NW, CHAINS, leader-elections(S1, S2, network-stakeholders(NW)), S1, S2) ]
+    eq maximize-chain-reward.max(emptyRewardsSet) = emptyRewards .
+    eq maximize-chain-reward.max(REWARDS1) = REWARDS1 .
+    eq maximize-chain-reward.max( emptyRewards ; (REWARDSSET) )
+     = maximize-chain-reward.max( (REWARDSSET) )
      .
-    eq $xxx.er(NW, CHAINS, (SHS1 # P1) | ER, S1, S2)
+   ceq maximize-chain-reward.max( ((sh('dishonest, S) |-> R1) REWARDS1)
+                                ; ((sh('dishonest, S) |-> R2) REWARDS2)
+                                ; (REWARDSSET)
+                                )
+     = maximize-chain-reward.max( ((sh('dishonest, S) |-> R1) REWARDS1)
+                                ; (REWARDSSET)
+                                )
+    if R1 >= R2 --- TODO: This is non-confluent.
+     .
+
+  ---- Case where only one reward in set has dishonest
+    eq maximize-chain-reward.max( ((sh('dishonest, S) |-> R1) REWARDS1)
+                                ; (                           REWARDS2)
+                                ; (REWARDSSET)
+                                )
+     = maximize-chain-reward.max( ((sh('dishonest, S) |-> R1) REWARDS1)
+                                ; (REWARDSSET)
+                                )
+       [owise]
+     .
+
+    op best-reponse-dishonest     : Network BlockChainSet Slot Slot                -> Rewards .
+    op $best-reponse-dishonest.er : Network BlockChainSet ElectionResult Slot Slot -> PRewards .
+
+    eq best-reponse-dishonest(NW, CHAINS, S1, S2)
+     = E[ $best-reponse-dishonest.er(NW, CHAINS, leader-elections(S1, S2, network-stakeholders(NW)), S1, S2) ]
+     .
+    eq $best-reponse-dishonest.er(NW, CHAINS, (SHS1 # P1) | ER, S1, S2)
      =   (maximize-chain-reward([NW | CHAINS | SHS1 | S1 -> S2]) # P1)
-       | $xxx.er(NW, CHAINS, ER, S1, S2)
+       | $best-reponse-dishonest.er(NW, CHAINS, ER, S1, S2)
      .
-    eq $xxx.er(NW, CHAINS, (SHS1 # P1) , S1, S2)
+    eq $best-reponse-dishonest.er(NW, CHAINS, (SHS1 # P1) , S1, S2)
      =   (maximize-chain-reward([NW | CHAINS | SHS1 | S1 -> S2]) # P1)
      .
 endm
 
-reduce xxx( (sh('honest,    51)[emptyBlockChainSet])
+reduce best-reponse-dishonest( (sh('honest,    51)[emptyBlockChainSet])
             (sh('dishonest, 49)[emptyBlockChainSet])
           , genesisBlock(sh('honest, 51) sh('dishonest, 49))
-          , 0 , 4
+          , 0 , 3
           ) .
 
---- reduce downTerm(getTerm(metaSearch( upModule('TEST, false)
----                          , upTerm([ (sh('honest, 51)[emptyBlockChainSet]) sh('dishonest, 49)[emptyBlockChainSet]
----                                   | genesisBlock(sh('honest, 51) sh('dishonest, 49))
----                                   | sh('dishonest, 49) sh('dishonest, 49) sh('honest, 51) sh('dishonest, 49)
----                                   | 0 -> 5
----                                   ]
----                                  )
----                          , 'ST:State
----                          , nil
----                          , '!
----                          , unbounded
----                          , 0
----                          )
----               ), error('bad-term)) .
 ```
