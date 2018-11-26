@@ -2,8 +2,6 @@
 title: Incentive Compatibility Analysis of Ouroboros
 author: Nishant Rodrigues, Lucas Peña
 date: November 25, 2018
-header-includes: |
-   \newtheorem{definition}{Definition}
 ---
 
 # Introduction

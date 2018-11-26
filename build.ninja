@@ -27,4 +27,5 @@ build README.pdf : pandoc README.md
 build stage-1.maude : tangle stage-1.md
     tangle_selector = .maude
 build stage-1.out : maude stage-1.maude
-build report.pdf : pandoc report.md
+build report.pdf : pandoc report.md | template.latex
+    flags = --template template.latex --pdf-engine=xelatex

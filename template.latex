@@ -1,0 +1,28 @@
+\documentclass[]{llncs2e/llncs}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{fontspec,xltxtra,xunicode}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+
+\BeforeBeginEnvironment{verbatim}{ \begin{footnotesize} \linespread{1.2}}
+\AfterEndEnvironment   {verbatim}{ \end  {footnotesize} }
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\begin{document}
+\title{$title$}
+\author{$author$}
+
+\maketitle
+\frontmatter
+\mainmatter
+$body$
+
+\end{document}
