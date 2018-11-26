@@ -1,6 +1,7 @@
 ---
 title: Incentive Compatibility Analysis of Ouroboros
 author: Nishant Rodrigues, Lucas Peña
+institute: University of Illinois
 date: November 25, 2018
 ---
 
