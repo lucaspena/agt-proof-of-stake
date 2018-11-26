@@ -310,7 +310,7 @@ it is slightly modified:
 
 \small
 \begin{Verbatim}[commandchars=\\\{\}]
- --- \textcolor{red}{Honest} Leader creates block and appends it to max valid chain,
+ --- \textcolor{red}{Honest} leader creates block and appends it to max valid chain,
  --- then immediately broadcasts that chain. State is frozen.
  crl \{ (LEADER[CHAIN ; CHAINS]) NW | CHAINS1 | LEADER SHS | S1 -> S2 \}
   => [ (LEADER[NEWCHAIN ; CHAIN ; CHAINS]) NW
