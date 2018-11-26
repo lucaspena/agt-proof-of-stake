@@ -240,6 +240,14 @@ When the slot increments, a new leader must be selected:
     eq chain-rewards(epsilon) = emptyRewards .
     eq chain-rewards(genesisBlock(SHS)) = emptyRewards .
     eq chain-rewards(CHAIN block(S1, SH1)) = (SH1 |-> 1) chain-rewards(CHAIN) .
+
+    op unconditional-rewards : StakeholderList -> Rewards .
+    eq unconditional-rewards(emptyStakeholderList)
+     = emptyRewards
+     .
+    eq unconditional-rewards(SH1 SHS)
+     = (SH1 |-> 1) unconditional-rewards(SHS)
+     .
 ```
 
 ```maude
@@ -267,7 +275,7 @@ reduce (genesisBlock(SH1) block(1, SH1) block(1, SH1) block(1, SH1)) \ 2 .
 
 reduce max-valid(   genesisBlock(SH1), emptyBlockChainSet) .
 reduce max-valid(   genesisBlock(SH1), genesisBlock(SH2) block(2, SH2) ) .
-reduce max-valid(   genesisBlock(SH1), 
+reduce max-valid(   genesisBlock(SH1),
                    ( genesisBlock(SH2) block(2, SH2) )
                  ; ( genesisBlock(SH3) block(2, SH3) )
                ) .
@@ -398,22 +406,40 @@ mod EXPECTATIONS is
        [owise]
      .
 
-    op best-reponse-dishonest     : Network BlockChainSet Slot Slot                -> Rewards .
-    op $best-reponse-dishonest.er : Network BlockChainSet ElectionResult Slot Slot -> PRewards .
+    op best-dishonest-chain-reward     : Network BlockChainSet Slot Slot                -> Rewards .
+    op best-dishonest-chain-reward.er : Network BlockChainSet ElectionResult Slot Slot -> PRewards .
 
-    eq best-reponse-dishonest(NW, CHAINS, S1, S2)
-     = E[ $best-reponse-dishonest.er(NW, CHAINS, leader-elections(S1, S2, network-stakeholders(NW)), S1, S2) ]
+    eq best-dishonest-chain-reward(NW, CHAINS, S1, S2)
+     = E[ best-dishonest-chain-reward.er(NW, CHAINS, leader-elections(S1, S2, network-stakeholders(NW)), S1, S2) ]
      .
-    eq $best-reponse-dishonest.er(NW, CHAINS, (SHS1 # P1) | ER, S1, S2)
+    eq best-dishonest-chain-reward.er(NW, CHAINS, (SHS1 # P1) | ER, S1, S2)
      =   (maximize-chain-reward([NW | CHAINS | SHS1 | S1 -> S2]) # P1)
-       | $best-reponse-dishonest.er(NW, CHAINS, ER, S1, S2)
+       | best-dishonest-chain-reward.er(NW, CHAINS, ER, S1, S2)
      .
-    eq $best-reponse-dishonest.er(NW, CHAINS, (SHS1 # P1) , S1, S2)
+    eq best-dishonest-chain-reward.er(NW, CHAINS, (SHS1 # P1) , S1, S2)
      =   (maximize-chain-reward([NW | CHAINS | SHS1 | S1 -> S2]) # P1)
+     .
+
+    op expected-reward : Network BlockChainSet Slot Slot -> Rewards .
+    op expected-reward.er : ElectionResult -> PRewards .
+
+    eq expected-reward(NW, CHAINS, S1, S2)
+     = E[ expected-reward.er(leader-elections(S1, S2, network-stakeholders(NW))) ]
+     .
+    eq expected-reward.er((SHS1 # P1) | ER)
+     = expected-reward.er((SHS1 # P1)) | expected-reward.er(ER)
+     .
+    eq expected-reward.er((SHS1 # P1))
+     =   (normalize-rewards(unconditional-rewards(SHS1), total-rewards(unconditional-rewards(SHS1))) # P1)
      .
 endm
 
-reduce best-reponse-dishonest( (sh('honest,    51)[emptyBlockChainSet])
+reduce expected-reward( (sh('honest,    51)[emptyBlockChainSet])
+                        (sh('dishonest, 49)[emptyBlockChainSet])
+                      , genesisBlock(sh('honest, 51) sh('dishonest, 49))
+                      , 0 , 3
+                      ) .
+reduce best-dishonest-chain-reward( (sh('honest,    51)[emptyBlockChainSet])
             (sh('dishonest, 49)[emptyBlockChainSet])
           , genesisBlock(sh('honest, 51) sh('dishonest, 49))
           , 0 , 3

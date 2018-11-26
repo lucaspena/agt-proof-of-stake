@@ -112,7 +112,12 @@ result State: 	{(sh('dishonest, 49)[emptyBlockChainSet]) sh('honest, 51)[
 	| 3 -> 4
 	}
 ==========================================
-reduce in EXPECTATIONS : best-reponse-dishonest((sh('dishonest, 49)[
+reduce in EXPECTATIONS : expected-reward((sh('dishonest, 49)[
+    emptyBlockChainSet]) sh('honest, 51)[emptyBlockChainSet], genesisBlock(sh(
+    'honest, 51) sh('dishonest, 49)), 0, 3) .
+result Rewards: (sh('dishonest, 49) |-> 49/100) sh('honest, 51) |-> 51/100
+==========================================
+reduce in EXPECTATIONS : best-dishonest-chain-reward((sh('dishonest, 49)[
     emptyBlockChainSet]) sh('honest, 51)[emptyBlockChainSet], genesisBlock(sh(
     'honest, 51) sh('dishonest, 49)), 0, 3) .
 result Rewards: (sh('dishonest, 49) |-> 1355683/2000000) sh('honest, 51) |->
