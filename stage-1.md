@@ -335,12 +335,12 @@ mod EXPECTATIONS is
     op emptyRewardsSet : -> RewardsSet               [ctor] .
     op _;_ : RewardsSet RewardsSet -> RewardsSet [ctor assoc comm id: emptyRewardsSet] .
 
-    op maximize-chain-reward     : State -> Rewards .
-    op maximize-chain-reward.n   : State Nat -> RewardsSet .
-    op maximize-chain-reward.max : RewardsSet -> Rewards .
-    eq maximize-chain-reward(ST) = maximize-chain-reward.max(maximize-chain-reward.n(ST, 0)) .
+    op max-dishonest-reward           : State -> Rewards .
+    op rewards-from-nth-solution      : State Nat -> RewardsSet .
+    op max-dishonest-reward.rewardset : RewardsSet -> Rewards .
+    eq max-dishonest-reward(ST) = max-dishonest-reward.rewardset(rewards-from-nth-solution(ST, 0)) .
 
-   ceq maximize-chain-reward.n(ST, N)
+   ceq rewards-from-nth-solution(ST, N)
      = emptyRewardsSet
     if RTRIPLE? := metaSearch(upModule('EXPECTATIONS, false)
                              , upTerm(ST)
@@ -352,9 +352,9 @@ mod EXPECTATIONS is
                              )
      /\ RTRIPLE? == failure
       .
-   ceq maximize-chain-reward.n(ST, N)
+   ceq rewards-from-nth-solution(ST, N)
      = normalize-rewards(REWARDS, total-rewards(REWARDS))
-     ; maximize-chain-reward.n(ST, N + 1)
+     ; rewards-from-nth-solution(ST, N + 1)
     if RTRIPLE? := metaSearch(upModule('EXPECTATIONS, false)
                              , upTerm(ST)
                              , 'ST1:State
@@ -370,44 +370,44 @@ mod EXPECTATIONS is
                                 )         )                 )        )
       .
 
-    eq maximize-chain-reward.max(emptyRewardsSet) = emptyRewards .
-    eq maximize-chain-reward.max(REWARDS1) = REWARDS1 .
-    eq maximize-chain-reward.max( emptyRewards ; (REWARDSSET) )
-     = maximize-chain-reward.max( (REWARDSSET) )
+    eq max-dishonest-reward.rewardset(emptyRewardsSet) = emptyRewards .
+    eq max-dishonest-reward.rewardset(REWARDS1) = REWARDS1 .
+    eq max-dishonest-reward.rewardset( emptyRewards ; (REWARDSSET) )
+     = max-dishonest-reward.rewardset( (REWARDSSET) )
      .
-   ceq maximize-chain-reward.max( ((sh('dishonest, S) |-> R1) REWARDS1)
+   ceq max-dishonest-reward.rewardset( ((sh('dishonest, S) |-> R1) REWARDS1)
                                 ; ((sh('dishonest, S) |-> R2) REWARDS2)
                                 ; (REWARDSSET)
                                 )
-     = maximize-chain-reward.max( ((sh('dishonest, S) |-> R1) REWARDS1)
+     = max-dishonest-reward.rewardset( ((sh('dishonest, S) |-> R1) REWARDS1)
                                 ; (REWARDSSET)
                                 )
     if R1 >= R2 --- TODO: This is non-confluent.
      .
 
-  ---- Case where only one reward in set has dishonest
-    eq maximize-chain-reward.max( ((sh('dishonest, S) |-> R1) REWARDS1)
-                                ; (                           REWARDS2)
-                                ; (REWARDSSET)
-                                )
-     = maximize-chain-reward.max( ((sh('dishonest, S) |-> R1) REWARDS1)
-                                ; (REWARDSSET)
-                                )
+  ---- Case where there is a rewardset where dishonest does not get a reward
+    eq max-dishonest-reward.rewardset( ((sh('dishonest, S) |-> R1) REWARDS1)
+                                     ; (                           REWARDS2)
+                                     ; (REWARDSSET)
+                                     )
+     = max-dishonest-reward.rewardset( ((sh('dishonest, S) |-> R1) REWARDS1)
+                                     ; (REWARDSSET)
+                                     )
        [owise]
      .
 
-    op best-dishonest-chain-reward     : Network BlockChainSet Slot Slot                -> Rewards .
+    op best-dishonest-chain-reward    : Network BlockChainSet Slot Slot                -> Rewards .
     op best-dishonest-chain-reward.er : Network BlockChainSet ElectionResult Slot Slot -> PRewards .
 
     eq best-dishonest-chain-reward(NW, CHAINS, S1, S2)
      = E[ best-dishonest-chain-reward.er(NW, CHAINS, leader-elections(S1, S2, network-stakeholders(NW)), S1, S2) ]
      .
     eq best-dishonest-chain-reward.er(NW, CHAINS, (SHS1 # P1) | ER, S1, S2)
-     =   (maximize-chain-reward([NW | CHAINS | SHS1 | S1 -> S2]) # P1)
+     =   (max-dishonest-reward([NW | CHAINS | SHS1 | S1 -> S2]) # P1)
        | best-dishonest-chain-reward.er(NW, CHAINS, ER, S1, S2)
      .
     eq best-dishonest-chain-reward.er(NW, CHAINS, (SHS1 # P1) , S1, S2)
-     =   (maximize-chain-reward([NW | CHAINS | SHS1 | S1 -> S2]) # P1)
+     =   (max-dishonest-reward([NW | CHAINS | SHS1 | S1 -> S2]) # P1)
      .
 
     op expected-reward : Network BlockChainSet Slot Slot -> Rewards .
