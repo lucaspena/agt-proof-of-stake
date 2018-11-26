@@ -66,7 +66,7 @@ well as the assumptions we are making about the algorithm in this paper.
 In Ouroboros [@ouroboros], The proof of stake algorithm is split into four
 stages. Each stage adds complexity regarding details such as delay of the
 system, endorsers of transactions, and more. We focus on the simplest version of
-the prtocol for our analysis.
+the protocol for our analysis.
 
 ## Preliminaries
 
@@ -152,7 +152,7 @@ using two \texttt{Slot}s representing the start slot and end slot in an epoch.
 ## Leader Election
 
 The Ouroboros algorithm crucially needs to elect a leader for each slot. The
-leader creates a new slot and controls which blockchain that block is appended
+leader creates a new block and controls which blockchain that block is appended
 to.
 
 In order to incentivize participation in the protocol, we need to fairly elect a
@@ -295,7 +295,7 @@ potentially could mask the actual longest blockchain until the end of the epoch,
 and force honest leaders to append blocks to what will turn out to not be the
 longest blockchain. Thus, the adversary may yield a larger reward with this
 dishonest behavior, as he would have created a larger percentage of blocks on
-the ultimately longest chain.
+the ultimately longest chain. We call this attack a "withholding attack".
 
 Since we assume all honest participants deterministically follow the protocol,
 we model all honest stakeholders as one stakeholder with 51% of stake:
@@ -364,13 +364,45 @@ participant may interact with the protocol:
    .
 ```
 
-
 ## Reward System
 
-The next intricacy of this algorithm involves the reward system given to the
-stakeholders. We first analyze a reward scheme that does not incentivize
-honesty, then show how this reward scheme can be modified.
-TODO: need more here
+After each iteration of the protocol, agents have publish additional blocks
+on to an exisiting chain for the slot that they are a leader.
+Once concencus is achieved only blocks on the longest chain are kept
+and all other chains (along with blocks on these chains) are discarded
+While it may seem intuitive to award only miners whos blocks are on the longest chain,
+this allows adverseries to employ withholding attacks to have dispropotionate control over the network. 
+For example, \textcolor{red}{ TODO: 3 slot example }
+
+We call this (flawed) reward mechanism `chain-rewards`
+and define it in Maude as follows:
+
+```maude
+  op chain-rewards : BlockChain -> Rewards .
+  eq chain-rewards(epsilon) = emptyRewards .
+  eq chain-rewards(genesisBlock(SHS)) = emptyRewards .
+  eq chain-rewards(CHAIN block(S1, SH1)) = (SH1 |-> 1) chain-rewards(CHAIN) .
+```
+
+Ideally, we would only reward stakeholders that issue a block on any fork.
+However, the reward mechanism is implmented in the blockchain itself, and cannot
+know about blocks issued in other forks. We cannot tell the difference between
+a stakeholder that was offline during its slot, and a stakeholder that issued
+a block to a fork that was not accepted by the network.
+So, we simply reward all stakeholders that have been elected as leader for a
+slot. We call this mechanism `unconditional-rewards`:
+
+```maude
+  op unconditional-rewards : StakeholderList -> Rewards .
+  eq unconditional-rewards(emptyStakeholderList) = emptyRewards .
+  eq unconditional-rewards(SH1 SHS) = (SH1 |-> 1) unconditional-rewards(SHS) .
+```
+
+## Analysis
+
+In our analysis, we compare these two reward mechanisms using Maude's `search`
+capability.
+
 
 # Conclusion
 

@@ -244,12 +244,8 @@ When the slot increments, a new leader must be selected:
     eq chain-rewards(CHAIN block(S1, SH1)) = (SH1 |-> 1) chain-rewards(CHAIN) .
 
     op unconditional-rewards : StakeholderList -> Rewards .
-    eq unconditional-rewards(emptyStakeholderList)
-     = emptyRewards
-     .
-    eq unconditional-rewards(SH1 SHS)
-     = (SH1 |-> 1) unconditional-rewards(SHS)
-     .
+    eq unconditional-rewards(emptyStakeholderList) = emptyRewards .
+    eq unconditional-rewards(SH1 SHS) = (SH1 |-> 1) unconditional-rewards(SHS) .
 ```
 
 ```maude

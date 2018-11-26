@@ -122,4 +122,4 @@ reduce in EXPECTATIONS : best-dishonest-chain-reward((sh('dishonest, 49)[
     'honest, 51) sh('dishonest, 49)), 0, 3) .
 result Rewards: (sh('dishonest, 49) |-> 1355683/2000000) sh('honest, 51) |->
     644317/2000000
-Maude> Bye.
+Bye.
