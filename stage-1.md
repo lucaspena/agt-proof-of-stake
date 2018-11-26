@@ -365,9 +365,9 @@ mod EXPECTATIONS is
                              )
      /\ RTRIPLE? =/= failure
      /\ REWARDS := chain-rewards(max-valid( epsilon
-                              , state-get-chains(downTerm( getTerm(RTRIPLE?)
-                                                         , error('bad-term)
-                    )         )                 )        )
+                                          , state-get-chains(downTerm( getTerm(RTRIPLE?)
+                                                                     , error('bad-term)
+                                )         )                 )        )
       .
 
     eq maximize-chain-reward.max(emptyRewardsSet) = emptyRewards .
