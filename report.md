@@ -132,10 +132,6 @@ at the genesis block.
 
 ```maude
   op isValid : BlockChain -> Bool .
-  eq isValid(genesisBlock(SHS)) = true .
-  eq isValid(genesisBlock(SHS) BLOCK) = true .
-  eq isValid(CHAIN block(S1, SH1) block(S2, SH2)) = S1 < S2 .
-  eq isValid(epsilon) = false .
 ```
 
 \begin{definition}[Epoch]
