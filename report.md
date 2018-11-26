@@ -425,7 +425,7 @@ all election results. We achieve this using the following two functions
 (implementation is omitted for brevity):
 
 ```maude
-  op max-dishonest-reward        : State -> Rewards .
+  op max-dishonest-reward : State -> Rewards .
   op expected-dishonest-chain-reward : Network BlockChainSet Slot Slot -> Rewards .
 ```
 
@@ -458,7 +458,9 @@ Selection `unconditional-reward` as the reward mechanism gives us much better re
 ```
 reduce expected-reward( (sh('dishonest, 49)[emptyBlockChainSet])
                         (sh('honest,    51)[emptyBlockChainSet])
-                      , genesisBlock(sh('honest, 51) sh('dishonest, 49))
+                      , genesisBlock( sh('honest, 51)
+                                      sh('dishonest, 49)
+                                    )
                       , 0, 3) .
 result Rewards: (sh('dishonest, 49) |-> 49/100) sh('honest, 51) |-> 51/100
 ```
