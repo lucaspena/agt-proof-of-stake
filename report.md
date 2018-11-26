@@ -199,7 +199,7 @@ with associated probabilities of each list. If \texttt{'a} had 60% of stake,
 then the probability of \texttt{aa} would be \texttt{prob(9/25)}, and so on for
 each election result.
 
-## Idealized Protocol
+## Honest Behaviour
 
 Before covering the idealized verson of the protocol where each participant is
 honest, we provide a couple more definitions:
@@ -260,7 +260,7 @@ We model this protocol in Maude with the following rewrite rules:
   /\ S1 < S2 .
 ```
 
-## Nondeterminism
+## Dishonest behavior
 
 As given in the previous section, this protocol is completely deterministic and
 thus relatively uninteresting. In order for analysis of this protocol to be
