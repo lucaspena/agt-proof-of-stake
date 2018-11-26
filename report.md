@@ -22,13 +22,13 @@ An alternative, proof of stake, attempts to address this. It attempts to choose
 a block through a voting mechanism. However, the dynamics of this mechanism is
 complex, and there are various incentives working at cross-purposes (if the
 block I vote for gets selected I get rewarded; voters could control miners;
-voters could attempt denial of service attacks; etc). Still, truthfulness in
+voters could attempt denial of service attacks; etc). Still, honesty in
 this domain is of the utmost importance. Cryptocurrency would inevitably fail if
 it was in a miners' best interest to lie about things like block validity, a
 transaction occurring, or which blockchain to append blocks to. In the domain of
 proof of stake, these security concerns are heightened. As users rather than
 miners now have control over the introduction of new currency, it is perhaps
-more critical that a proof of stake protocol is truthful.
+more critical that a proof of stake protocol is honest.
 
 One such proof of stake scheme is Ouroboros [@ouroboros]. Ouroboros is one of
 the first proof of stake based blockchain protocols, used in the coin Cardano.
@@ -368,7 +368,7 @@ participant may interact with the protocol:
 
 The next intricacy of this algorithm involves the reward system given to the
 stakeholders. We first analyze a reward scheme that does not incentivize
-truthfulness, then show how this reward scheme can be modified.
+honesty, then show how this reward scheme can be modified.
 TODO: need more here
 
 # Conclusion
@@ -396,7 +396,7 @@ in a particular block. The main intricacy this adds is that the full Ouroboros
 protocol includes elected \textit{endorsers} that confirm the validity of
 transactions. Endorsers are elected and rewarded similarly to block leaders in
 the protocol, but they still add another layer of complexity, as endorses
-themselves can be either truthful or not.
+themselves can be either honest or not.
 
 An alternative area for future work is considering other proof of stake
 protocols. The main competitor to Ouroboros is Casper [@casper] which is a
