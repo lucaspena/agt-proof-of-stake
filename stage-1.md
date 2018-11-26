@@ -344,7 +344,7 @@ mod EXPECTATIONS is
      = emptyRewardsSet
     if RTRIPLE? := metaSearch(upModule('EXPECTATIONS, false)
                              , upTerm(ST)
-                             , 'ST:State
+                             , 'ST1:State
                              , nil
                              , '!
                              , unbounded
@@ -357,7 +357,7 @@ mod EXPECTATIONS is
      ; maximize-chain-reward.n(ST, N + 1)
     if RTRIPLE? := metaSearch(upModule('EXPECTATIONS, false)
                              , upTerm(ST)
-                             , 'ST:State
+                             , 'ST1:State
                              , nil
                              , '!
                              , unbounded
