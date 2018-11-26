@@ -20,8 +20,5 @@ $endfor$
 \author{$author$}
 \institute{$institute$}
 \maketitle
-\frontmatter
-\mainmatter
 $body$
-
 \end{document}
