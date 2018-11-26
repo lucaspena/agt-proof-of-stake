@@ -176,6 +176,7 @@ TODO: Here we assume that that agents have knowledge of the broadcast chains
    crl { (SH1[CHAIN ; CHAINS]) NW |         CHAINS1 | SHS | S1 -> S2}
     => { (SH1[CHAIN ; CHAINS]) NW | CHAIN ; CHAINS1 | SHS | S1 -> S2}
     if not(CHAIN in CHAINS1)
+    /\ sh('dishonest, STAKE) := SH1
      .
 ```
 
@@ -185,7 +186,8 @@ TODO: We've hardcoded the bad stakeholder here.
 ```maude
    crl { (LEADER[                            CHAIN ; CHAINS]) NW | CHAINS1 | LEADER SHS | S1 -> S2 }
     => { (LEADER[(CHAIN block(S1, LEADER)) ; CHAIN ; CHAINS]) NW | CHAINS1 | LEADER SHS | S1 -> S2 }
-    if last-slot(CHAIN) < S1 and not(CHAIN block(S1, LEADER) in CHAINS)
+    if last-slot(CHAIN) < S1
+    /\ not(CHAIN block(S1, LEADER) in CHAINS)
     /\ sh('dishonest, STAKE) := LEADER
      .
 ```

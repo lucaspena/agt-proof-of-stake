@@ -5,6 +5,8 @@
 \usepackage{fontspec,xltxtra,xunicode}
 \usepackage{hyperref}
 \usepackage{etoolbox}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
 
 \BeforeBeginEnvironment{verbatim}{ \begin{footnotesize} \linespread{1.2}}
 \AfterEndEnvironment   {verbatim}{ \end  {footnotesize} }
