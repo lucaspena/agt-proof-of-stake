@@ -371,25 +371,17 @@ stakeholders. We first analyze a reward scheme that does not incentivize
 truthfulness, then show how this reward scheme can be modified.
 TODO: need more here
 
-## Analysis
+# Conclusion
 
-Before covering the analysis of the protocol, we provide a couple more
-definitions:
+We have successfully modeled an abstraction of the Ouroboros protocol in
+Maude. We've analyzed two different reward mechanisms for the protocol, and
+showed that a naive reward mechanism is not incentive compatible, and in fact is
+not even a Nash equilibrium. We also briefly covered the modified reward
+mechanism and showed how it fixes the issue for the example that fails with the
+first reward mechanism. Finally, having a formal model of this protocol will
+facilitate research in many future directions.
 
-TODO: rules for honest
-
-This states
-
-The rules for the dishonest participants is as follows:
-
-TODO: rules for dishonest
-
-These rules emulate the nondeterminism mentioned in the previous
-section. Specifically,
-
-## Conclusion
-
-## Future Work
+# Future Work
 
 There are many directions for future work with this project. Most such areas
 involve tightening the abstraction between our Maude implementation and the
@@ -411,13 +403,10 @@ protocols. The main competitor to Ouroboros is Casper (TODO: cite) which is a
 proof of stake protocol developed by the Ethereum Foundation. Casper greatly
 differs from Ouroboros in a few areas. Primarily, it is developed as a "finality
 gadget" that finalizes blocks in a proof of stake manner \textit{on top of} a
-proof of work scheme.
-
-Casper also requires a $\frac23$ majority instead of a $\frac12$ majority as in
-Ouroboros. However, the $\frac23$ majority need only be \textit{rational} as
-opposed to non-adversarial in Ouroboros (TODO: check this).  All these
-differences lead to a much different protocol, and analyzing game-theoretic
-properties of Casper is definitely worthy of its own rigorous treatment.
+proof of work scheme. Additionally, Casper requires a $\frac23$ majority instead
+of a $\frac12$ majority as in Ouroboros. These differences lead to a much
+different protocol, and analyzing game-theoretic properties of Casper is
+definitely worthy of its own rigorous treatment.
 
 Finally, we also would like to consider different game theoretic properties of
 this protocol. TODO: more here
