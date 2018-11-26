@@ -324,6 +324,7 @@ it is slightly modified:
   /\textbackslash S1 < S2
    .
 \end{Verbatim}
+
 \normalsize
 
 In addition, we have the following rules which correspond to how a dishonest
