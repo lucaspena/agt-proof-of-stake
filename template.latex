@@ -7,6 +7,9 @@
 \usepackage{etoolbox}
 \usepackage{fancyvrb}
 \usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,positioning}
+\tikzset{initial text={genesis}}
 
 \BeforeBeginEnvironment{verbatim}{ \begin{footnotesize} \linespread{1.2}}
 \AfterEndEnvironment   {verbatim}{ \end  {footnotesize} }
