@@ -197,6 +197,16 @@ returns
   sh('a, 3) # prob(3/10) | sh('b, 6) # prob(3/5) | sh('c, 1) # prob(1/10)
 ```
 
+We use \texttt{leader-election} as a helper function in
+\texttt{leader-elections} which returns all possible lists of stakeholders that
+could have won elections between two given slots, as well as the associated
+probability of each list. That is, calling \texttt{leader-elections} on two
+participants \texttt{'a} and \texttt{'b} between slots 1 and 2 (inclusive)
+returns four lists \texttt{aa}, \texttt{ab}, \texttt{ba}, and \texttt{bb}, along
+with associated probabilities of each list. If \texttt{'a} had 60% of stake,
+then the probability of \texttt{aa} would be \texttt{prob(9/25)}, and so on for
+each election result.
+
 ## Idealized Protocol
 
 Before covering the idealized verson of the protocol where each participant is
@@ -207,13 +217,13 @@ A network contains all stakeholders participating in the protocol, as well as
 all possible blockchains each stakeholder has in scope at any given point.
 \end{definition}
 
-\begin{verbatim}
-sort Network .
-op emptyNetwork :                   -> Network [ctor] .
-op _[_] : Stakeholder BlockChainSet -> Network [ctor] .
-op _ _ : Network Network            -> Network
-         [ctor assoc comm id: emptyNetwork] .
-\end{verbatim}
+```maude
+  sort Network .
+  op emptyNetwork :                   -> Network [ctor] .
+  op _[_] : Stakeholder BlockChainSet -> Network [ctor] .
+  op _ _ : Network Network            -> Network
+           [ctor assoc comm id: emptyNetwork] .
+```
 
 \begin{definition}[State]
 The state of a system contains the current network, all publicly available
@@ -222,13 +232,13 @@ slots, a beginning slot, and an ending slot. The state is either "active" (curly
 braces) or "frozen" (square brackets).
 \end{definition}
 
-\begin{verbatim}
-sort State .
-op { _ | _ | _ | _ -> _ }
- : Network BlockChainSet StakeholderList Slot Slot -> State [ctor] .
-op [ _ | _ | _ | _ -> _ ]
- : Network BlockChainSet StakeholderList Slot Slot -> State [ctor] .
-\end{verbatim}
+```maude
+  sort State .
+  op { _ | _ | _ | _ -> _ }
+   : Network BlockChainSet StakeholderList Slot Slot -> State [ctor] .
+  op [ _ | _ | _ | _ -> _ ]
+   : Network BlockChainSet StakeholderList Slot Slot -> State [ctor] .
+```
 
 At a high-level, the idealized protocol elects a leader for each slot. That
 leader should add all publicly broadcasted blockhains into a local set. Then,
@@ -260,11 +270,12 @@ We model this protocol in Maude with the following rewrite rules:
 
 ## Nondeterminism
 
-In order for analysis of this protocol to be interesting, an adversary must have
-some potential flexibility with how he or she interacts with the
-protocol. First, note that a crucial assumption present in
-[Ouroboros][ouroboros] (and most blockchain protocols) is that at least 51% of
-the participants are acting truthfully. While the practicality of this
+As given in the previous section, this protocol is completely deterministic and
+thus relatively uninteresting. In order for analysis of this protocol to be
+interesting, an adversary must have some potential flexibility with how he or
+she interacts with the protocol. First, note that a crucial assumption present
+in [Ouroboros][ouroboros] (and most blockchain protocols) is that at least 51%
+of the participants are acting truthfully. While the practicality of this
 assumption can be argued, it is out of the scope of this paper. Thus, we will
 assume at least 51% follow the protocol precisely as outlined in the beginning
 of this section, and we will discuss potential behaviors of the "adversarial
@@ -286,6 +297,73 @@ longest blockchain. Thus, the adversary may yield a larger reward with this
 dishonest behavior, as he would have created a larger percentage of blocks on
 the ultimately longest chain.
 
+Since we assume all honest participants deterministically follow the protocol,
+we model all honest stakeholders as one stakeholder with 51% of stake:
+\texttt{sh('honest, 51)}. Similarly, since we can assume all dishonest
+participants adversarially collude, we model all dishonest stakeholders as one
+stakeholder with 49% of stake: \texttt{sh('dishonest, 49)}.
+
+Because the adversary will always be incentivized to completely update his local
+blockchain set, the first rule from the previous section remains
+unchanged. However, the second rule is now only true for honest participants, so
+it is slightly modified:
+
+\small
+\begin{Verbatim}[commandchars=\\\{\}]
+ --- \textcolor{red}{Honest} Leader creates block and appends it to max valid chain,
+ --- then immediately broadcasts that chain. State is frozen.
+ crl \{ (LEADER[CHAIN ; CHAINS]) NW | CHAINS1 | LEADER SHS | S1 -> S2 \}
+  => [ (LEADER[NEWCHAIN ; CHAIN ; CHAINS]) NW
+     | NEWCHAIN ; CHAINS1 | SHS | S1 -> S2
+     ]
+  if last-slot(CHAIN) < S1
+  /\textbackslash not(CHAIN block(S1, LEADER) in CHAINS)
+  /\textbackslash max-valid(CHAIN, CHAINS) = CHAIN
+  /\textbackslash NEWCHAIN := (CHAIN block(S1, LEADER))
+  \textcolor{red}{/\textbackslash sh('honest, STAKE) := LEADER}
+  /\textbackslash S1 < S2
+   .
+\end{Verbatim}
+\normalsize
+
+In addition, we have the following rules which correspond to how a dishonest
+participant may interact with the protocol:
+
+```maude
+ --- Dishonest leader can add a block to any of his local chains.
+ crl { (LEADER[CHAIN ; CHAINS]) NW | CHAINS1 | LEADER SHS | S1 -> S2 }
+  => { (LEADER[(CHAIN block(S1, LEADER)) ; CHAIN ; CHAINS]) NW 
+     | CHAINS1 | LEADER SHS | S1 -> S2
+     }
+  if last-slot(CHAIN) < S1
+  /\ not(CHAIN block(S1, LEADER) in CHAINS)
+  /\ sh('dishonest, STAKE) := LEADER
+   .
+ --- Dishonest stakeholders can broadcast chains they know about.
+ crl { (SH1[CHAIN ; CHAINS]) NW |         CHAINS1 | SHS | S1 -> S2 }
+  => { (SH1[CHAIN ; CHAINS]) NW | CHAIN ; CHAINS1 | SHS | S1 -> S2 }
+  if not(CHAIN in CHAINS1)
+  /\ sh('dishonest, STAKE) := SH1
+   .
+ --- Dishonest leader can choose to add a block to any of his local chains.
+ crl { (LEADER[CHAIN ; CHAINS]) NW | CHAINS1 | LEADER SHS | S1 -> S2 }
+  => { (LEADER[(CHAIN block(S1, LEADER)) ; CHAIN ; CHAINS]) NW
+     | CHAINS1 | LEADER SHS | S1 -> S2
+     }
+  if last-slot(CHAIN) < S1
+  /\ not(CHAIN block(S1, LEADER) in CHAINS)
+  /\ sh('dishonest, STAKE) := LEADER
+   .
+ --- Dishonest leader can freeze state at any time, preparing for slot
+ --- to be incremented.
+ crl { NW | CHAINS | LEADER SHS | S1 -> S2 }
+  => [ NW | CHAINS | SHS        | S1 -> S2 ]
+  if S1 < S2
+  /\ sh('dishonest, STAKE) := LEADER
+   .
+```
+
+
 ## Reward System
 
 The next intricacy of this algorithm involves the reward system given to the
@@ -294,12 +372,6 @@ truthfulness, then show how this reward scheme can be modified.
 TODO: need more here
 
 ## Analysis
-
-Since we assume all honest participants deterministically follow the protocol,
-we model all honest stakeholders as one stakeholder with 51% of stake:
-\texttt{sh('honest, 51)}. Similarly, since we can assume all dishonest
-participants adversarially collude, we model all dishonest stakeholders as one
-stakeholder with 49% of stake: \texttt{sh('dishonest, 49)}.
 
 Before covering the analysis of the protocol, we provide a couple more
 definitions:
