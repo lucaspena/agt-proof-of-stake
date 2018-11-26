@@ -89,7 +89,7 @@ algorithm. By definition, we assume the stake is nonzero for each stakeholder.
 \end{verbatim}
 \normalsize
 
-A \texttt{Qid} is a quoted identifier in Maude. We use it here to name the
+\noindent A \texttt{Qid} is a quoted identifier in Maude. We use it here to name the
 stakeholder. \texttt{NzNat} represents the nonzero natural number corresponding
 to the stake of the stakeholder.
 
@@ -155,7 +155,7 @@ at the genesis block.
 An epoch is a set of $R$ adjacent slots $S = \{sl_1, \ldots, sl_R\}$.
 \end{definition}
 
-We do not define an epochs explicitly in Maude. Instead, we model it simply by
+\noindent We do not define an epochs explicitly in Maude. Instead, we model it simply by
 using two \texttt{Slot}s representing the start slot and end slot in an epoch.
 
 ## Leader Election
@@ -192,10 +192,10 @@ the desired probability.
 \end{verbatim}
 \normalsize
 
-In Maude, we use the notation \texttt{SH1 \# prob(R1)} represents that
+\noindent In Maude, we use the notation \texttt{SH1 \# prob(R1)} represents that
 stakeholder \texttt{S1} is elected as the slot leader with probability
-\texttt{R1}. The \texttt{_ | _} notation represents choice, so \texttt{SH1 \#
-prob(R1) | SH2 \# prob(R2)} means that \texttt{SH1} is elected with probability
+\texttt{R1}. The \texttt{\_ | \_} notation represents choice, so 
+\texttt{SH1 \# prob(R1) | SH2 \# prob(R2)} means that \texttt{SH1} is elected with probability
 \texttt{R1} and \texttt{SH2} is elected with probability \texttt{R2}. Thus, a
 single call to \texttt{leader-election} returns all possible leaders and
 associated probabilities that each leader gets elected. For example:
@@ -212,15 +212,70 @@ returns
 \end{verbatim}
 \normalsize
 
-## Protocol
+## Idealized Protocol
 
-That leader should add all publicly broadcasted blockhains into a local set. Then,
-the leader will then create a block for that slot and append that block to the
+Before covering the idealized verson of the protocol where each participant is
+honest, we provide a couple more definitions:
+
+\begin{definition}[Network]
+A network contains all stakeholders participating in the protocol, as well as
+all possible blockchains each stakeholder has in scope at any given point.
+\end{definition}
+
+\begin{verbatim}
+sort Network .
+op emptyNetwork :                   -> Network [ctor] .
+op _[_] : Stakeholder BlockChainSet -> Network [ctor] .
+op _ _ : Network Network            -> Network 
+         [ctor assoc comm id: emptyNetwork] .
+\end{verbatim}
+
+\begin{definition}[State]
+The state of a system contains the current network, all publicly available
+blockchains, a list of stakeholders that will be the leader for all remaining
+slots, a beginning slot, and an ending slot. The state is either "active" (curly
+braces) or "frozen" (square brackets).
+\end{definition}
+
+\begin{verbatim}
+sort State .
+op { _ | _ | _ | _ -> _ }
+ : Network BlockChainSet StakeholderList Slot Slot -> State [ctor] .
+op [ _ | _ | _ | _ -> _ ]
+ : Network BlockChainSet StakeholderList Slot Slot -> State [ctor] .
+\end{verbatim}
+
+At a high-level, the idealized protocol elects a leader for each slot. That
+leader should add all publicly broadcasted blockhains into a local set. Then,
+the leader will create a block for that slot and append that block to the
 longest block in her local set. Finally, she should broadcast that blockchain
 out to all other stakeholders, and all stakeholders should update their local
 blockchains with the newly broadcasted blockchain from the leader.
 
-### Nondeterminism
+We model this protocol in Maude with the following rewrite rules:
+
+\small
+\begin{verbatim}
+ --- Stakeholders add broadcasted chains into their local chain set 
+ --- while state is frozen. Slot is incremented and state becomes active.
+  rl [ (SH1[CHAINS1          ]) NW | CHAINS2 | SH1 SHS | S1     -> S2 ]
+  => { (SH1[CHAINS1 ; CHAINS2]) NW | CHAINS2 | SH1 SHS | S1 + 1 -> S2 }
+   .
+ --- Leader creates block and appends it to max valid chain, then 
+ --- immediately broadcasts that chain. State is frozen.
+ crl { (LEADER[CHAIN ; CHAINS]) NW | CHAINS1 | LEADER SHS | S1 -> S2 }
+  => [ (LEADER[NEWCHAIN ; CHAIN ; CHAINS]) NW 
+     | NEWCHAIN ; CHAINS1 | SHS | S1 -> S2
+     ]
+  if last-slot(CHAIN) < S1
+  /\ not(CHAIN block(S1, LEADER) in CHAINS)
+  /\ max-valid(CHAIN, CHAINS) = CHAIN
+  /\ NEWCHAIN := (CHAIN block(S1, LEADER))
+  /\ S1 < S2
+\end{verbatim}
+\normalsize
+
+## Nondeterminism
 
 In order for analysis of this protocol to be interesting, an adversary must have
 some potential flexibility with how he or she interacts with the
@@ -265,38 +320,6 @@ stakeholder with 49% of stake: \texttt{sh('dishonest, 49)}.
 
 Before covering the analysis of the protocol, we provide a couple more
 definitions:
-
-\begin{definition}[Network]
-A network contains all stakeholders participating in the protocol, as well as
-all possible blockchains each stakeholder has in scope at any given point.
-\end{definition}
-
-\begin{verbatim}
-sort Network .
-op emptyNetwork :                   -> Network [ctor] .
-op _[_] : Stakeholder BlockChainSet -> Network [ctor] .
-op _ _ : Network Network            -> Network 
-         [ctor assoc comm id: emptyNetwork] .
-\end{verbatim}
-
-\begin{definition}[State]
-The state of a system contains the current network, all publicly available
-blockchains, a list of stakeholders that will be the leader for all remaining
-slots, a beginning slot, and an ending slot. The state is either "active" (curly
-braces) or "frozen" (square brackets).
-\end{definition}
-
-\begin{verbatim}
-sort State .
-op { _ | _ | _ | _ -> _ }
- : Network BlockChainSet StakeholderList Slot Slot -> State
-   [ctor] .
-op [ _ | _ | _ | _ -> _ ]
- : Network BlockChainSet StakeholderList Slot Slot -> State
-   [ctor] .
-\end{verbatim}
-
-The deterministic behavior for the honest participants is as follows:
 
 TODO: rules for honest
 
