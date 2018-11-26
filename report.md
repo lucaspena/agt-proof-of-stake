@@ -417,13 +417,6 @@ we can simply iterate over each probable election result:
 ```maude
   op expected-reward : Network BlockChainSet Slot Slot -> Rewards .
   op expected-reward.er : ElectionResult -> PRewards .
-
-  eq expected-reward(NW, CHAINS, S1, S2)
-   = E[ expected-reward.er(leader-elections(S1, S2, network-stakeholders(NW))) ] .
-  eq expected-reward.er((SHS1 # P1) | ER)
-   = expected-reward.er((SHS1 # P1)) | expected-reward.er(ER) .
-  eq expected-reward.er((SHS1 # P1))
-   =   (normalize-rewards(unconditional-rewards(SHS1), total-rewards(unconditional-rewards(SHS1))) # P1) .
 ```
 
 We run these for a simple network with two stakeholders for an epoch of three slots:
