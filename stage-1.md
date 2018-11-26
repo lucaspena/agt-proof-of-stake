@@ -394,17 +394,17 @@ mod EXPECTATIONS is
        [owise]
      .
 
-    op best-dishonest-chain-reward    : Network BlockChainSet Slot Slot                -> Rewards .
-    op best-dishonest-chain-reward.er : Network BlockChainSet ElectionResult Slot Slot -> PRewards .
+    op expected-dishonest-chain-reward    : Network BlockChainSet Slot Slot                -> Rewards .
+    op expected-dishonest-chain-reward.er : Network BlockChainSet ElectionResult Slot Slot -> PRewards .
 
-    eq best-dishonest-chain-reward(NW, CHAINS, S1, S2)
-     = E[ best-dishonest-chain-reward.er(NW, CHAINS, leader-elections(S1, S2, network-stakeholders(NW)), S1, S2) ]
+    eq expected-dishonest-chain-reward(NW, CHAINS, S1, S2)
+     = E[ expected-dishonest-chain-reward.er(NW, CHAINS, leader-elections(S1, S2, network-stakeholders(NW)), S1, S2) ]
      .
-    eq best-dishonest-chain-reward.er(NW, CHAINS, (SHS1 # P1) | ER, S1, S2)
+    eq expected-dishonest-chain-reward.er(NW, CHAINS, (SHS1 # P1) | ER, S1, S2)
      =   (max-dishonest-reward([NW | CHAINS | SHS1 | S1 -> S2]) # P1)
-       | best-dishonest-chain-reward.er(NW, CHAINS, ER, S1, S2)
+       | expected-dishonest-chain-reward.er(NW, CHAINS, ER, S1, S2)
      .
-    eq best-dishonest-chain-reward.er(NW, CHAINS, (SHS1 # P1) , S1, S2)
+    eq expected-dishonest-chain-reward.er(NW, CHAINS, (SHS1 # P1) , S1, S2)
      =   (max-dishonest-reward([NW | CHAINS | SHS1 | S1 -> S2]) # P1)
      .
 
@@ -422,15 +422,21 @@ mod EXPECTATIONS is
      .
 endm
 
-reduce expected-reward( (sh('honest,    51)[emptyBlockChainSet])
-                        (sh('dishonest, 49)[emptyBlockChainSet])
-                      , genesisBlock(sh('honest, 51) sh('dishonest, 49))
-                      , 0 , 3
-                      ) .
-reduce best-dishonest-chain-reward( (sh('honest,    51)[emptyBlockChainSet])
+reduce expected-dishonest-chain-reward( (sh('honest,    51)[emptyBlockChainSet])
             (sh('dishonest, 49)[emptyBlockChainSet])
           , genesisBlock(sh('honest, 51) sh('dishonest, 49))
           , 0 , 3
           ) .
 
+reduce expected-reward( (sh('honest,    51)[emptyBlockChainSet])
+                        (sh('dishonest, 49)[emptyBlockChainSet])
+                      , genesisBlock(sh('honest, 51) sh('dishonest, 49))
+                      , 0 , 3
+                      ) .
+                      
+reduce expected-reward( (sh('honest, 51)[emptyBlockChainSet])
+                        (sh('honest, 49)[emptyBlockChainSet])
+                      , genesisBlock(sh('honest, 51) sh('honest, 49))
+                      , 0 , 3
+                      ) .
 ```

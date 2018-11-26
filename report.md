@@ -393,10 +393,64 @@ slot. We call this mechanism `unconditional-rewards`:
   eq unconditional-rewards(SH1 SHS) = (SH1 |-> 1) unconditional-rewards(SHS) .
 ```
 
-## Analysis
-
 In our analysis, we compare these two reward mechanisms using Maude's `search`
-capability.
+capability to show that the first mechanism is *not* incentive compatible. To do
+this, we need to calculate the expected value of reward for a dishonest player
+assuming he makes the optimum choice of blocks to mine and when to broadcast. In
+our model, the only non-deterministic behavior is in the choices the dishonest
+player can make. (The probabilistic election results are computed as a closed
+form expression; honest players are not allowed to make any choices). Thus
+finding the best-response reward for the dishonest stakeholder is simply a
+search for the state reachable via rewriting that gives him the largest reward,
+given an election result. We then compute the expectation for this reward over
+all election results. We achieve this using the following two functions
+(implementation is omitted for brevity):
+
+```maude
+  op max-dishonest-reward        : State -> Rewards .
+  op expected-dishonest-chain-reward : Network BlockChainSet Slot Slot -> Rewards .
+```
+
+Since the unconditional rewards is a function only of the election result,
+we can simply iterate over each probable election result:
+
+```maude
+  op expected-reward : Network BlockChainSet Slot Slot -> Rewards .
+  op expected-reward.er : ElectionResult -> PRewards .
+
+  eq expected-reward(NW, CHAINS, S1, S2)
+   = E[ expected-reward.er(leader-elections(S1, S2, network-stakeholders(NW))) ] .
+  eq expected-reward.er((SHS1 # P1) | ER)
+   = expected-reward.er((SHS1 # P1)) | expected-reward.er(ER) .
+  eq expected-reward.er((SHS1 # P1))
+   =   (normalize-rewards(unconditional-rewards(SHS1), total-rewards(unconditional-rewards(SHS1))) # P1) .
+```
+
+We run these for a simple network with two stakeholders for an epoch of three slots:
+
+```
+reduce expected-dishonest-chain-reward( (sh('dishonest, 49)[ emptyBlockChainSet])
+                                        (sh('honest, 51)[emptyBlockChainSet])
+                                      , genesisBlock(sh('honest, 51) sh('dishonest, 49))
+                                      , 0, 3) .
+result Rewards: (sh('dishonest, 49) |-> 1355683/2000000)
+                (sh('honest,    51) |->  644317/2000000)
+```
+
+Notice that while the dishonest stakeholder has only 49% of the stake he is able
+to secure more than two thirds of the reward! With both players displaying
+honest behavior we see expected rewards proportional to their stake [@git-repo].
+Clearly the dishonest player has incentive to game the system.
+
+Selection `unconditional-reward` as the reward mechanism gives us much better results:
+
+```
+reduce expected-reward( (sh('dishonest, 49)[emptyBlockChainSet])
+                        (sh('honest,    51)[emptyBlockChainSet])
+                      , genesisBlock(sh('honest, 51) sh('dishonest, 49))
+                      , 0, 3) .
+result Rewards: (sh('dishonest, 49) |-> 49/100) sh('honest, 51) |-> 51/100
+```
 
 
 # Conclusion
