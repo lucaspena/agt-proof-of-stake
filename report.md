@@ -30,7 +30,7 @@ proof of stake, these security concerns are heightened. As users rather than
 miners now have control over the introduction of new currency, it is perhaps
 more critical that a proof of stake protocol is truthful.
 
-One such proof of stake scheme is [Ouroboros][ouroboros]. Ouroboros is one of
+One such proof of stake scheme is Ouroboros [@ouroboros]. Ouroboros is one of
 the first proof of stake based blockchain protocols, used in the coin Cardano.
 In this paper, we analyze an abstraction of the Ouroboros protocol using the
 Maude System (see Section 3).
@@ -274,7 +274,7 @@ As given in the previous section, this protocol is completely deterministic and
 thus relatively uninteresting. In order for analysis of this protocol to be
 interesting, an adversary must have some potential flexibility with how he or
 she interacts with the protocol. First, note that a crucial assumption present
-in [Ouroboros][ouroboros] (and most blockchain protocols) is that at least 51%
+in Ouroboros [@ouroboros] (and most blockchain protocols) is that at least 51%
 of the participants are acting truthfully. While the practicality of this
 assumption can be argued, it is out of the scope of this paper. Thus, we will
 assume at least 51% follow the protocol precisely as outlined in the beginning
@@ -399,7 +399,7 @@ the protocol, but they still add another layer of complexity, as endorses
 themselves can be either truthful or not.
 
 An alternative area for future work is considering other proof of stake
-protocols. The main competitor to Ouroboros is Casper (TODO: cite) which is a
+protocols. The main competitor to Ouroboros is Casper [@casper] which is a
 proof of stake protocol developed by the Ethereum Foundation. Casper greatly
 differs from Ouroboros in a few areas. Primarily, it is developed as a "finality
 gadget" that finalizes blocks in a proof of stake manner \textit{on top of} a
@@ -408,15 +408,4 @@ of a $\frac12$ majority as in Ouroboros. These differences lead to a much
 different protocol, and analyzing game-theoretic properties of Casper is
 definitely worthy of its own rigorous treatment.
 
-Finally, we also would like to consider different game theoretic properties of
-this protocol. TODO: more here
-
 # References
-
-[ouroboros]: https://eprint.iacr.org/2016/889.pdf
-[casper]: https://arxiv.org/abs/1710.09437
-[blockchain-agt]: https://dl.acm.org/citation.cfm?id=2772879.2773270
-[pathwaylogic]: https://doi.org/10.1016/S1571-0661(05)82533-2
-[NPA]: http://www.sciencedirect.com/science/article/pii/S0304397506005780
-[kmaude]: http://dx.doi.org/10.1007/978-3-642-16310-4_8
-[twentyears]: http://www.sciencedirect.com/science/article/pii/S1567832612000707
