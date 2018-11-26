@@ -329,16 +329,6 @@ mod EXPECTATIONS is
      = (SH1 |-> R1 * R2) E[ (REWARDS) # prob(R2) ]
      .
 
-    op max-rewards : Rewards Rewards -> Rewards .
-   ceq max-rewards(REWARDS1, REWARDS2)
-     = if R1 > R2
-       then REWARDS1
-       else REWARDS2
-       fi
-    if (sh('dishonest, S) |-> R1) REWARDS1REST := REWARDS1
-    /\ (sh('dishonest, S) |-> R2) REWARDS2REST := REWARDS2
-     .
-
     sort RewardsSet .
     vars REWARDSSET : RewardsSet .
     subsort Rewards < RewardsSet .
