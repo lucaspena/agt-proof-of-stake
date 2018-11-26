@@ -16,7 +16,7 @@ example, involve repeatedly calculating cryptographic hashes. While this scheme
 is effecitve in securing the network, it is extremely energy-expensive. It has
 been estimated that globally, bitcoin mining consumes electricity on a scale
 comaprable to the that of Ireland. Should proof work remain the
-state-of-the-art, this inefficiency will only worsen. 
+state-of-the-art, this inefficiency will only worsen.
 
 An alternative, proof of stake, attempts to address this. It attempts to choose
 a block through a voting mechanism. However, the dynamics of this mechanism is
@@ -33,7 +33,7 @@ more critical that a proof of stake protocol is truthful.
 One such proof of stake scheme is [Ouroboros][ouroboros]. Ouroboros is one of
 the first proof of stake based blockchain protocols, used in the coin Cardano.
 In this paper, we analyze an abstraction of the Ouroboros protocol using the
-Maude System (see Section 3). 
+Maude System (see Section 3).
 
 The remainder of the paper is as follows: We first discuss the Ouroboros
 algorithm in some detail, as well as the specific algorithm we use for
@@ -79,16 +79,14 @@ A stakeholder is a participant of the Ouroboros proof of stake algorithm.
 \end{definition}
 
 \begin{definition}[Stake]
-Stake is the amount of money a stakeholder has put up as part of the Ouroboros 
+Stake is the amount of money a stakeholder has put up as part of the Ouroboros
 algorithm. By definition, we assume the stake is nonzero for each stakeholder.
 \end{definition}
 
-\small
-\begin{verbatim}
+```maude
   sort Stakeholder .
   op sh : Qid NzNat -> Stakeholder [ctor] .
-\end{verbatim}
-\normalsize
+```
 
 \noindent A \texttt{Qid} is a quoted identifier in Maude. We use it here to name the
 stakeholder. \texttt{NzNat} represents the nonzero natural number corresponding
@@ -98,11 +96,9 @@ to the stake of the stakeholder.
 A slot is a discrete unit of time used for the protocol. We use natural numbers to model slots.
 \end{definition}
 
-\small
-\begin{verbatim}
+```maude
   sort Slot . subsort Nat < Slot .
-\end{verbatim}
-\normalsize
+```
 
 \begin{definition}[Block]
 A block is generated at a particular slot $sl_i$ by a stakeholder $s_i$.
@@ -110,12 +106,10 @@ It contains information regarding the slot number at which the block was created
 as well as which stakeholder created the block.
 \end{definition}
 
-\small
-\begin{verbatim}
+```maude
   sort Block .
   op block : Slot Stakeholder -> Block [ctor] .
-\end{verbatim}
-\normalsize
+```
 
 \begin{definition}[Genesis Block]
 The genesis block only contains the list of stakeholders participating in the
@@ -126,31 +120,27 @@ protocol.
 A blockchain is any sequence of blocks.
 \end{definition}
 
-\small
-\begin{verbatim}
+```maude
   sort BlockChain .
   subsorts Block < BlockChain .
   op genesisBlock : StakeholderList       -> BlockChain [ctor] .
   op _ _          : BlockChain BlockChain -> BlockChain
                     [ctor assoc id: epsilon] .
   op epsilon      :                       -> BlockChain [ctor] .
-  \end{verbatim}
-\normalsize
+  ```
 
 \begin{definition}[Valid Blockchain]
 A valid blockchain is a blockchain with strictly increasing slots that is rooted
 at the genesis block.
 \end{definition}
 
-\small
-\begin{verbatim}
+```maude
   op isValid : BlockChain -> Bool .
   eq isValid(genesisBlock(SHS)) = true .
   eq isValid(genesisBlock(SHS) BLOCK) = true .
   eq isValid(CHAIN block(S1, SH1) block(S2, SH2)) = S1 < S2 .
   eq isValid(epsilon) = false .
-\end{verbatim}
-\normalsize
+```
 
 \begin{definition}[Epoch]
 An epoch is a set of $R$ adjacent slots $S = \{sl_1, \ldots, sl_R\}$.
@@ -163,7 +153,7 @@ using two \texttt{Slot}s representing the start slot and end slot in an epoch.
 
 The Ouroboros algorithm crucially needs to elect a leader for each slot. The
 leader creates a new slot and controls which blockchain that block is appended
-to. 
+to.
 
 In order to incentivize participation in the protocol, we need to fairly elect a
 leader for each slot. This is done proportional to the amount of stake each
@@ -177,8 +167,7 @@ of participant $j$ in relation to participants $j+1,\ldots,n$, provided no
 leader has been chosen yet. This ensures the leader of each slot is elected with
 the desired probability.
 
-\small
-\begin{verbatim}
+```maude
   op leader-election : Slot StakeholderList -> ElectionResult .
   eq leader-election(S1, emptyStakeholderList) = noneStakeholder # prob(1) .
  ceq leader-election(S1, SH1 SHS)
@@ -190,28 +179,23 @@ the desired probability.
   => leader-election(N, SHS) # prob(1 - STAKE / total-stake(SH1 SHS))
   if sh(Q, STAKE) := SH1
    .
-\end{verbatim}
-\normalsize
+```
 
 \noindent In Maude, we use the notation \texttt{SH1 \# prob(R1)} represents that
 stakeholder \texttt{S1} is elected as the slot leader with probability
-\texttt{R1}. The \texttt{\_ | \_} notation represents choice, so 
+\texttt{R1}. The \texttt{\_ | \_} notation represents choice, so
 \texttt{SH1 \# prob(R1) | SH2 \# prob(R2)} means that \texttt{SH1} is elected with probability
 \texttt{R1} and \texttt{SH2} is elected with probability \texttt{R2}. Thus, a
 single call to \texttt{leader-election} returns all possible leaders and
 associated probabilities that each leader gets elected. For example:
 
-\small
-\begin{verbatim} 
+```maude
   leader-election(1, sh('a, 3) sh('b, 6) sh('c, 1))
-\end{verbatim}
-\normalsize
+```
 returns
-\small
-\begin{verbatim}
+```maude
   sh('a, 3) # prob(3/10) | sh('b, 6) # prob(3/5) | sh('c, 1) # prob(1/10)
-\end{verbatim}
-\normalsize
+```
 
 ## Idealized Protocol
 
@@ -227,7 +211,7 @@ all possible blockchains each stakeholder has in scope at any given point.
 sort Network .
 op emptyNetwork :                   -> Network [ctor] .
 op _[_] : Stakeholder BlockChainSet -> Network [ctor] .
-op _ _ : Network Network            -> Network 
+op _ _ : Network Network            -> Network
          [ctor assoc comm id: emptyNetwork] .
 \end{verbatim}
 
@@ -255,17 +239,16 @@ blockchains with the newly broadcasted blockchain from the leader.
 
 We model this protocol in Maude with the following rewrite rules:
 
-\small
-\begin{verbatim}
- --- Stakeholders add broadcasted chains into their local chain set 
+```maude
+ --- Stakeholders add broadcasted chains into their local chain set
  --- while state is frozen. Slot is incremented and state becomes active.
   rl [ (SH1[CHAINS1          ]) NW | CHAINS2 | SH1 SHS | S1     -> S2 ]
   => { (SH1[CHAINS1 ; CHAINS2]) NW | CHAINS2 | SH1 SHS | S1 + 1 -> S2 }
    .
- --- Leader creates block and appends it to max valid chain, then 
+ --- Leader creates block and appends it to max valid chain, then
  --- immediately broadcasts that chain. State is frozen.
  crl { (LEADER[CHAIN ; CHAINS]) NW | CHAINS1 | LEADER SHS | S1 -> S2 }
-  => [ (LEADER[NEWCHAIN ; CHAIN ; CHAINS]) NW 
+  => [ (LEADER[NEWCHAIN ; CHAIN ; CHAINS]) NW
      | NEWCHAIN ; CHAINS1 | SHS | S1 -> S2
      ]
   if last-slot(CHAIN) < S1
@@ -273,8 +256,7 @@ We model this protocol in Maude with the following rewrite rules:
   /\ max-valid(CHAIN, CHAINS) = CHAIN
   /\ NEWCHAIN := (CHAIN block(S1, LEADER))
   /\ S1 < S2
-\end{verbatim}
-\normalsize
+```
 
 ## Nondeterminism
 
