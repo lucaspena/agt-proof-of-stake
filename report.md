@@ -59,9 +59,6 @@ TODO: more here
 
 # Ouroboros
 
-In this section we discuss the proof of stake algorithm used in Ouroboros, as
-well as the assumptions we are making about the algorithm in this paper.
-
 In Ouroboros [@ouroboros], The proof of stake algorithm is split into four
 stages. Each stage adds complexity regarding details such as delay of the
 system, endorsers of transactions, and more. We focus on the simplest version of
@@ -70,7 +67,7 @@ the protocol for our analysis.
 ## Preliminaries
 
 In this section, we go into detail regarding definitions needed to understand
-the speicific algorithm we are modelling. Most definitions are taken from
+the specific algorithm we are modelling. Most definitions are taken from
 Ouroboros [@ouroboros]. We also show how each of these are defined in Maude.
 
 \begin{definition}[Stakeholder]
@@ -227,8 +224,8 @@ all possible blockchains each stakeholder has in scope at any given point.
 \begin{definition}[State]
 The state of a system contains the current network, all publicly available
 blockchains, a list of stakeholders that will be the leader for all remaining
-slots, a beginning slot, and an ending slot. The state is either "active" (curly
-braces) or "frozen" (square brackets).
+slots, a beginning slot, and an ending slot. The state is either ``active'' (curly
+braces) or ``frozen'' (square brackets).
 \end{definition}
 
 ```maude
@@ -252,8 +249,8 @@ We model this protocol in Maude with the following rewrite rules:
  --- Stakeholders add broadcasted chains into their local chain set
  --- while state is frozen. Slot is incremented and state becomes active.
   rl [ (SH1[CHAINS1          ]) NW | CHAINS2 | SH1 SHS | S1     -> S2 ]
-  => { (SH1[CHAINS1 ; CHAINS2]) NW | CHAINS2 | SH1 SHS | S1 + 1 -> S2 }
-   .
+  => { (SH1[CHAINS1 ; CHAINS2]) NW | CHAINS2 | SH1 SHS | S1 + 1 -> S2 } .
+
  --- Leader creates block and appends it to max valid chain, then
  --- immediately broadcasts that chain. State is frozen.
  crl { (LEADER[CHAIN ; CHAINS]) NW | CHAINS1 | LEADER SHS | S1 -> S2 }
@@ -264,7 +261,7 @@ We model this protocol in Maude with the following rewrite rules:
   /\ not(CHAIN block(S1, LEADER) in CHAINS)
   /\ max-valid(CHAIN, CHAINS) = CHAIN
   /\ NEWCHAIN := (CHAIN block(S1, LEADER))
-  /\ S1 < S2
+  /\ S1 < S2 .
 ```
 
 ## Nondeterminism
@@ -284,8 +281,9 @@ An adversary has multiple ways to deviate from the protocol. For example, he
 need not update his local blockchain set accordingly with all blockchains
 previously leaders had broadcasted. However, this makes it more unlikely that
 the chain the adversary adds his created block to will ultimately be the longest
-chain in an epoch. Thus, with the first reward system mentioned, the adversary
-will never be incentivized to not update his local blockchain set.
+chain in an epoch. Thus, as we will see when we discussing rewards in Section
+3.5, the adversary will never be incentivized to not update his local blockchain
+set.
 
 Next, crucially, the adversary can choose not to immediately broadcast his
 updated blockchain to all other participants of the protocol. This is the main
@@ -320,8 +318,7 @@ it is slightly modified:
   /\textbackslash max-valid(CHAIN, CHAINS) = CHAIN
   /\textbackslash NEWCHAIN := (CHAIN block(S1, LEADER))
   \textcolor{red}{/\textbackslash sh('honest, STAKE) := LEADER}
-  /\textbackslash S1 < S2
-   .
+  /\textbackslash S1 < S2 .
 \end{Verbatim}
 
 \normalsize
@@ -337,14 +334,14 @@ participant may interact with the protocol:
      }
   if last-slot(CHAIN) < S1
   /\ not(CHAIN block(S1, LEADER) in CHAINS)
-  /\ sh('dishonest, STAKE) := LEADER
-   .
+  /\ sh('dishonest, STAKE) := LEADER .
+
  --- Dishonest stakeholders can broadcast chains they know about.
  crl { (SH1[CHAIN ; CHAINS]) NW |         CHAINS1 | SHS | S1 -> S2 }
   => { (SH1[CHAIN ; CHAINS]) NW | CHAIN ; CHAINS1 | SHS | S1 -> S2 }
   if not(CHAIN in CHAINS1)
-  /\ sh('dishonest, STAKE) := SH1
-   .
+  /\ sh('dishonest, STAKE) := SH1 .
+
  --- Dishonest leader can choose to add a block to any of his local chains.
  crl { (LEADER[CHAIN ; CHAINS]) NW | CHAINS1 | LEADER SHS | S1 -> S2 }
   => { (LEADER[(CHAIN block(S1, LEADER)) ; CHAIN ; CHAINS]) NW
@@ -352,23 +349,22 @@ participant may interact with the protocol:
      }
   if last-slot(CHAIN) < S1
   /\ not(CHAIN block(S1, LEADER) in CHAINS)
-  /\ sh('dishonest, STAKE) := LEADER
-   .
+  /\ sh('dishonest, STAKE) := LEADER .
+
  --- Dishonest leader can freeze state at any time, preparing for slot
  --- to be incremented.
  crl { NW | CHAINS | LEADER SHS | S1 -> S2 }
   => [ NW | CHAINS | SHS        | S1 -> S2 ]
   if S1 < S2
-  /\ sh('dishonest, STAKE) := LEADER
-   .
+  /\ sh('dishonest, STAKE) := LEADER .
 ```
 
 ## Reward System
 
-After each iteration of the protocol, agents have publish additional blocks
-on to an exisiting chain for the slot that they are a leader.
-Once concencus is achieved only blocks on the longest chain are kept
-and all other chains (along with blocks on these chains) are discarded
+After each iteration of the protocol, agents publish additional blocks
+onto an exisiting chain for the slot that they are a leader.
+Once concensus is achieved only blocks on the longest chain are kept
+and all other chains (along with blocks on these chains) are discarded.
 While it may seem intuitive to award only miners whos blocks are on the longest chain,
 this allows adverseries to employ withholding attacks to have dispropotionate control over the network. 
 For example, \textcolor{red}{ TODO: 3 slot example }
@@ -384,7 +380,7 @@ and define it in Maude as follows:
 ```
 
 Ideally, we would only reward stakeholders that issue a block on any fork.
-However, the reward mechanism is implmented in the blockchain itself, and cannot
+However, the reward mechanism is implemented in the blockchain itself, and cannot
 know about blocks issued in other forks. We cannot tell the difference between
 a stakeholder that was offline during its slot, and a stakeholder that issued
 a block to a fork that was not accepted by the network.
