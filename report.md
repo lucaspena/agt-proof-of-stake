@@ -45,9 +45,9 @@ conclude and discuss opportunities for future work.
 
 The Maude System is a programming language often used for modeling and
 verification of systems. It has been used to verify a wide spectrum of systems,
-from biological systems ([Pathway Logic][pathwaylogic]), to cryptographic
-protocols ([Maude NPA][NPA]), to concensus algorithms, to programming languages
-([KFramework][kmaude]), and so on (see [twentyears] for a comprehensive survey
+from biological systems (Pathway Logic [@pathwaylogic]), to cryptographic
+protocols (Maude NPA [@NPA]), to concensus algorithms, to programming languages
+(KFramework [@kmaude]), and so on (see [@twentyears] for a comprehensive survey
 of such applications). Maude allows specifying systems, including their
 non-deterministic behaviours, as a transition system using rewriting logic. For
 model checking purposes they provide a very high level formalism for
@@ -63,7 +63,7 @@ TODO: more here
 In this section we discuss the proof of stake algorithm used in Ouroboros, as
 well as the assumptions we are making about the algorithm in this paper.
 
-In [Ouroboros][ouroboros], The proof of stake algorithm is split into four
+In Ouroboros [@ouroboros], The proof of stake algorithm is split into four
 stages. Each stage adds complexity regarding details such as delay of the
 system, endorsers of transactions, and more. We focus on the simplest version of
 the prtocol for our analysis.
@@ -72,7 +72,7 @@ the prtocol for our analysis.
 
 In this section, we go into detail regarding definitions needed to understand
 the speicific algorithm we are modelling. Most definitions are taken from
-[Ouroboros][ouroboros]. We also show how each of these are defined in Maude.
+Ouroboros [@ouroboros]. We also show how each of these are defined in Maude.
 
 \begin{definition}[Stakeholder]
 A stakeholder is a participant of the Ouroboros proof of stake algorithm.
@@ -127,7 +127,7 @@ A blockchain is any sequence of blocks.
   op _ _          : BlockChain BlockChain -> BlockChain
                     [ctor assoc id: epsilon] .
   op epsilon      :                       -> BlockChain [ctor] .
-  ```
+```
 
 \begin{definition}[Valid Blockchain]
 A valid blockchain is a blockchain with strictly increasing slots that is rooted
@@ -349,3 +349,13 @@ properties of Casper is definitely worthy of its own rigorous treatment.
 
 Finally, we also would like to consider different game theoretic properties of
 this protocol. TODO: more here
+
+# References
+
+[ouroboros]: https://eprint.iacr.org/2016/889.pdf
+[casper]: https://arxiv.org/abs/1710.09437
+[blockchain-agt]: https://dl.acm.org/citation.cfm?id=2772879.2773270
+[pathwaylogic]: https://doi.org/10.1016/S1571-0661(05)82533-2
+[NPA]: http://www.sciencedirect.com/science/article/pii/S0304397506005780
+[kmaude]: http://dx.doi.org/10.1007/978-3-642-16310-4_8
+[twentyears]: http://www.sciencedirect.com/science/article/pii/S1567832612000707
