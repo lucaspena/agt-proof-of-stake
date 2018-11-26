@@ -9,13 +9,13 @@ date: November 25, 2018
 
 As cryptocurrencies like bitcoin become more and more popular, energy efficiency
 is becoming a growing concern. Cryptotocurrencies generally utilize a "proof of
-work" scheme to deter denial of service and other attacks. A key aspect to proof
+work" scheme to deter denial of service and other attacks. A key aspect of proof
 of work schemes is that they must be expensive to compute, yet easy to
 verify. Most major cryptocurrency networks use CPU bound schemes that, for
 example, involve repeatedly calculating cryptographic hashes. While this scheme
 is effecitve in securing the network, it is extremely energy-expensive. It has
 been estimated that globally, bitcoin mining consumes electricity on a scale
-comaprable to the that of Ireland. Should proof work remain the
+comaprable to the that of Ireland. Should proof of work remain the
 state-of-the-art, this inefficiency will only worsen.
 
 An alternative, proof of stake, attempts to address this. It attempts to choose
@@ -24,7 +24,7 @@ complex, and there are various incentives working at cross-purposes (if the
 block I vote for gets selected I get rewarded; voters could control miners;
 voters could attempt denial of service attacks; etc). Still, honesty in
 this domain is of the utmost importance. Cryptocurrency would inevitably fail if
-it was in a miners' best interest to lie about things like block validity, a
+it was in miners' best interest to lie about things like block validity, a
 transaction occurring, or which blockchain to append blocks to. In the domain of
 proof of stake, these security concerns are heightened. As users rather than
 miners now have control over the introduction of new currency, it is perhaps
@@ -33,13 +33,12 @@ more critical that a proof of stake protocol is honest.
 One such proof of stake scheme is Ouroboros [@ouroboros]. Ouroboros is one of
 the first proof of stake based blockchain protocols, used in the coin Cardano.
 In this paper, we analyze an abstraction of the Ouroboros protocol using the
-Maude System (see Section 3).
+Maude System (see Section 2).
 
-The remainder of the paper is as follows: We first discuss the Ouroboros
-algorithm in some detail, as well as the specific algorithm we use for
-verification. We then discuss the Maude System, and how we can use it to verify
-properties about Ouroboros. Next, we discuss our key results. Finally, we
-conclude and discuss opportunities for future work.
+The remainder of the paper is as follows: We first briefly discuss the Maude
+system used for our analysis. Then, we discuss the Ouroboros protocol, including
+how we model the protocol in Maude. We also discuss our main results n this
+section. Finally, we conclude and discuss opportunities for future work.
 
 # Maude System
 
