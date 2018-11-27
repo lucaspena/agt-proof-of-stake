@@ -178,7 +178,7 @@ We assume that there is no delay: Leaders have full knowledge of all broadcast c
 Dishonest behaviour
 -------------------
 
-Being dishonest allows f
+Being dishonest allows a few choices:
 
 A dishonest leader may choose to **mine a block** to any of their local chains:
 
@@ -214,7 +214,7 @@ The leader may **wait** for the slot number to increment:
 Honest behaviour
 ----------------
 
-Honest stakeholders must follow the protocol. *No non-determinism is allowed*: they must:
+Honest stakeholders must follow the protocol exactly. *No non-determinism is allowed*: they must:
 append to a `max-valid` chain and immediately broadcast that chain:
 
 ```maude
