@@ -9,20 +9,20 @@ date: November 25, 2018
 
 As cryptocurrencies like bitcoin become more and more popular, energy efficiency
 is becoming a growing concern. Cryptotocurrencies generally utilize a "proof of
-work" scheme to deter denial of service and other attacks. A key aspect of proof
-of work schemes is that they must be expensive to compute, yet easy to
-verify. Most major cryptocurrency networks use CPU bound schemes that, for
-example, involve repeatedly calculating cryptographic hashes. While this scheme
-is effecitve in securing the network, it is extremely energy-expensive. It has
-been estimated that globally, bitcoin mining consumes electricity on a scale
-comaprable to the that of Ireland. Should proof of work remain the
-state-of-the-art, this inefficiency will only worsen.
+work" scheme to deter denial of service and other attacks, while achieving
+concensus. A key aspect of proof of work schemes is that they must be expensive
+to compute, yet easy to verify. Most major cryptocurrency networks use CPU bound
+schemes that, for example, involve repeatedly calculating cryptographic hashes.
+While this scheme is effecitve in securing the network, it is extremely
+energy-expensive. It has been estimated that globally, bitcoin mining consumes
+electricity on a scale comaprable to the that of Ireland. Should proof of work
+remain the state-of-the-art, this inefficiency will only worsen.
 
 An alternative, proof of stake, attempts to address this. It attempts to choose
 a block through a voting mechanism. However, the dynamics of this mechanism is
 complex, and there are various incentives working at cross-purposes (if the
 block I vote for gets selected I get rewarded; voters could control miners;
-voters could attempt denial of service attacks; etc). Still, honesty in
+voters could attempt denial of service attacks; etc). Still, truthfullness in
 this domain is of the utmost importance. Cryptocurrency would inevitably fail if
 it was in miners' best interest to lie about things like block validity, a
 transaction occurring, or which blockchain to append blocks to. In the domain of
@@ -55,8 +55,6 @@ formal analysis purposes, since concurrent systems specified as rewrite theories
 can be analyzed using Maude's LTL model checker and other model checkers and
 theorem proving tools in Maude's formal environment.
 
-TODO: more here
-
 # Ouroboros
 
 In Ouroboros [@ouroboros], The proof of stake algorithm is split into four
@@ -75,7 +73,7 @@ A stakeholder is a participant of the Ouroboros proof of stake algorithm.
 \end{definition}
 
 \begin{definition}[Stake]
-Stake is the amount of money a stakeholder has put up as part of the Ouroboros
+Stake is the amount of currency a stakeholder has put up as part of the Ouroboros
 algorithm. By definition, we assume the stake is nonzero for each stakeholder.
 \end{definition}
 
@@ -139,7 +137,7 @@ An epoch is a set of $R$ adjacent slots $S = \{sl_1, \ldots, sl_R\}$.
 \end{definition}
 
 \noindent We do not define an epochs explicitly in Maude. Instead, we model it simply by
-using two \texttt{Slot}s representing the start slot and end slot in an epoch.
+using two \texttt{Slot}s representing the start slot and end slot of an epoch.
 
 ## Leader Election
 
@@ -201,7 +199,7 @@ each election result.
 
 ## Honest Behaviour
 
-Before covering the idealized verson of the protocol where each participant is
+Before covering the idealized version of the protocol where each participant is
 honest, we provide a couple more definitions:
 
 \begin{definition}[Network]
