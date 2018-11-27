@@ -362,15 +362,6 @@ blocks on these chains) are discarded.  While it may seem intuitive to award
 only miners whos blocks are on the longest chain, this allows adverseries to
 employ withholding attacks to have dispropotionate control over the network.
 
-For example, in Figure \ref{wh-attack}, the dishonest stakeholder is elected
-leader at slots 1 and 3, while the honest stakeholder is elected leader at slots
-0 and 2. If the dishonest stakeholder does not broadcast the fork after mining a
-block, then the honest stakeholder at slot 2 is forced to build a block directly
-off of the block built at slot 0. Then, the dishonest stakeholder can continue
-building off his withheld fork in slot 3, inhibiting the rewards of the honest
-player. If the dishonest player now chooses to broadcast his fork, the maximum
-valid chain does not include the block mined at slot 1.
-
 \begin{figure}\label{wh-attack}
 \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto]
    \node[state,accepting,initial] (h_0)   {$h_0$}; 
@@ -384,6 +375,15 @@ valid chain does not include the block mined at slot 1.
 \end{tikzpicture}
 \caption{Withholding Attack Example}
 \end{figure}
+
+For example, in Figure \ref{wh-attack}, the dishonest stakeholder is elected
+leader at slots 1 and 3, while the honest stakeholder is elected leader at slots
+0 and 2. If the dishonest stakeholder does not broadcast the fork after mining a
+block, then the honest stakeholder at slot 2 is forced to build a block directly
+off of the block built at slot 0. Then, the dishonest stakeholder can continue
+building off his withheld fork in slot 3, inhibiting the rewards of the honest
+player. If the dishonest player now chooses to broadcast his fork, the maximum
+valid chain does not include the block mined at slot 1.
 
 We call this (flawed) reward mechanism `chain-rewards`
 and define it in Maude as follows:
