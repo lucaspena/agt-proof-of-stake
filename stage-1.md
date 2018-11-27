@@ -10,7 +10,8 @@ mod STAGE-1 is
     vars SH1 SH2 SH3 SH4 SH5 LEADER : Stakeholder .
     op sh : Qid NzNat -> Stakeholder [ctor] .
 
-    sort StakeholderList . subsort Stakeholder < StakeholderList .
+    sort StakeholderList .
+    subsort Stakeholder < StakeholderList .
     vars SHS SHS1 SHS2 : StakeholderList .
     op emptyStakeholderList : -> StakeholderList [ctor] .
     op _ _ : StakeholderList StakeholderList -> StakeholderList [ctor assoc id: emptyStakeholderList] .
@@ -158,7 +159,7 @@ mod STAGE-1 is
     eq state-get-chains({ NW | CHAINS | SHS | S1 -> S2 }) = CHAINS .
 ```
 
-Stakeholders can add broadcasted chains into their local chain set:
+We assume that there is no delay: Leaders have full knowledge of all broadcast chains.
 
 ```maude
     rl [ (SH1[CHAINS1           ]) NW | CHAINS2 | SH1 SHS | S1     -> S2 ]
@@ -169,19 +170,7 @@ Stakeholders can add broadcasted chains into their local chain set:
      .
 ```
 
-Stakeholders can broadcast chains they have know about:
-TODO: Here we assume that that agents have knowledge of the broadcast chains
-
-```maude
-   crl { (SH1[CHAIN ; CHAINS]) NW |         CHAINS1 | SHS | S1 -> S2}
-    => { (SH1[CHAIN ; CHAINS]) NW | CHAIN ; CHAINS1 | SHS | S1 -> S2}
-    if not(CHAIN in CHAINS1)
-    /\ sh('dishonest, STAKE) := SH1
-     .
-```
-
-A dishonest leader can choose to add a block to any of their local chains:
-TODO: We've hardcoded the bad stakeholder here.
+A dishonest leader can choose to **mine a block** to any of their local chains:
 
 ```maude
    crl { (LEADER[                            CHAIN ; CHAINS]) NW | CHAINS1 | LEADER SHS | S1 -> S2 }
@@ -191,6 +180,27 @@ TODO: We've hardcoded the bad stakeholder here.
     /\ sh('dishonest, STAKE) := LEADER
      .
 ```
+
+Stakeholders can **broadcast** chains they have know about:
+
+```maude
+   crl { (SH1[CHAIN ; CHAINS]) NW |         CHAINS1 | SHS | S1 -> S2}
+    => { (SH1[CHAIN ; CHAINS]) NW | CHAIN ; CHAINS1 | SHS | S1 -> S2}
+    if not(CHAIN in CHAINS1)
+    /\ sh('dishonest, STAKE) := SH1
+     .
+```
+
+The leader may **wait** for the slot number to increment:
+
+```maude
+   crl { NW | CHAINS | LEADER SHS | S1 -> S2 }
+    => [ NW | CHAINS | SHS        | S1 -> S2 ]
+    if S1 < S2
+    /\ sh('dishonest, STAKE) := LEADER
+     .
+```
+
 
 Honest stakeholders must append a `max-valid` chain and immediately broadcast that chain:
 
@@ -203,16 +213,6 @@ Honest stakeholders must append a `max-valid` chain and immediately broadcast th
     /\ NEWCHAIN := (CHAIN block(S1, LEADER))
     /\ sh('honest, STAKE) := LEADER
     /\ S1 < S2
-     .
-```
-
-When the slot increments, a new leader must be selected:
-
-```maude
-   crl { NW | CHAINS | LEADER SHS | S1 -> S2 }
-    => [ NW | CHAINS | SHS        | S1 -> S2 ]
-    if S1 < S2
-    /\ sh('dishonest, STAKE) := LEADER
      .
 ```
 
