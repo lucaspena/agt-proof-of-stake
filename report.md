@@ -10,7 +10,7 @@ date: November 25, 2018
 As cryptocurrencies like bitcoin become more and more popular, energy efficiency
 is becoming a growing concern. Cryptotocurrencies generally utilize a "proof of
 work" scheme to deter denial of service and other attacks, while achieving
-concensus. A key aspect of proof of work schemes is that they must be expensive
+consensus. A key aspect of proof of work schemes is that they must be expensive
 to compute, yet easy to verify. Most major cryptocurrency networks use CPU bound
 schemes that, for example, involve repeatedly calculating cryptographic hashes.
 While this scheme is effecitve in securing the network, it is extremely
@@ -45,7 +45,7 @@ section. Finally, we conclude and discuss opportunities for future work.
 The Maude System is a programming language often used for modeling and
 verification of systems. It has been used to verify a wide spectrum of systems,
 from biological systems (Pathway Logic [@pathwaylogic]), to cryptographic
-protocols (Maude NPA [@NPA]), to concensus algorithms, to programming languages
+protocols (Maude NPA [@NPA]), to consensus algorithms, to programming languages
 (KFramework [@kmaude]), and so on (see [@twentyears] for a comprehensive survey
 of such applications). Maude allows specifying systems, including their
 non-deterministic behaviours, as a transition system using rewriting logic. For
@@ -356,7 +356,7 @@ participant may interact with the protocol:
 ## Reward System
 
 After each iteration of the protocol, agents publish additional blocks onto an
-exisiting chain for the slot that they are a leader.  Once concensus is achieved
+existing chain for the slot that they are a leader.  Once consensus is achieved
 only blocks on the longest chain are kept and all other chains (along with
 blocks on these chains) are discarded.  While it may seem intuitive to award
 only miners whos blocks are on the longest chain, this allows adverseries to
