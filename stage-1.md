@@ -143,7 +143,12 @@ mod STAGE-1 is
     op network-stakeholders : Network -> StakeholderList .
     eq network-stakeholders(emptyNetwork) = emptyStakeholderList .
     eq network-stakeholders((SH1[CHAINS]) NW) = SH1 network-stakeholders(NW).
+```
 
+Modelling the protocol
+----------------------
+
+```maude
     sort State .
     vars ST : State .
     op error : Qid -> State [ctor] .
@@ -170,7 +175,12 @@ We assume that there is no delay: Leaders have full knowledge of all broadcast c
      .
 ```
 
-A dishonest leader can choose to **mine a block** to any of their local chains:
+Dishonest behaviour
+-------------------
+
+Being dishonest allows f
+
+A dishonest leader may choose to **mine a block** to any of their local chains:
 
 ```maude
    crl { (LEADER[                            CHAIN ; CHAINS]) NW | CHAINS1 | LEADER SHS | S1 -> S2 }
@@ -181,7 +191,7 @@ A dishonest leader can choose to **mine a block** to any of their local chains:
      .
 ```
 
-Stakeholders can **broadcast** chains they have know about:
+A dishonest agent may **broadcast** chains they have whether they are a leader or not:
 
 ```maude
    crl { (SH1[CHAIN ; CHAINS]) NW |         CHAINS1 | SHS | S1 -> S2}
@@ -201,8 +211,11 @@ The leader may **wait** for the slot number to increment:
      .
 ```
 
+Honest behaviour
+----------------
 
-Honest stakeholders must append a `max-valid` chain and immediately broadcast that chain:
+Honest stakeholders must follow the protocol. *No non-determinism is allowed*: they must:
+append to a `max-valid` chain and immediately broadcast that chain:
 
 ```maude
    crl { (LEADER[           CHAIN ; CHAINS]) NW |            CHAINS1 | LEADER SHS | S1 -> S2 }
@@ -215,6 +228,9 @@ Honest stakeholders must append a `max-valid` chain and immediately broadcast th
     /\ S1 < S2
      .
 ```
+
+Rewards
+-------
 
 ```maude
     sort Rewards .
